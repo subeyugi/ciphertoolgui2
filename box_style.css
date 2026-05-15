@@ -1,0 +1,92 @@
+/*全体的な内容*/
+.box{
+    position: absolute;
+    color: #FFFFFF;
+    font-size: medium;
+    width: 180px;
+    height: 120px;
+    margin: 5px;
+    padding: 5px;
+    user-select: none;
+    background-color: #ff3030;
+}
+
+.del_btn{
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    top: 0px;
+    left: 147px;
+    font-size: small;
+}
+
+.del_btn:hover{
+    color: red;
+}
+
+.alert_icon{
+    position: absolute;
+    height: 10px;
+    width: 10px;
+    top: -3px;
+    left: -3px;
+    background-color: #FF0000;
+    border-radius: 50%;
+}
+
+.alert_icon:hover::after{
+    position: absolute;
+    height: 100px;
+    width: 50px;
+    background-color: #FFFFFF;
+}
+
+select{
+    position: absolute;
+    top: 5px;
+    left: 5px;
+}
+
+.text_box{
+    position: absolute;
+    top: 85px;
+    left: 5px;
+    height: 25px;
+    width: 175;
+}
+
+/*特殊*/
+.box_charcode_code{
+    position: absolute;
+    top: 35px;
+    left:5px;
+    font-size: 12px;
+}
+
+.box_charcode_option{
+    position: absolute;
+    top: 35px;
+    left: 85px;
+    font-size: 12px;
+}
+
+.box_charIndex{
+    position: absolute;
+    top: 35px;
+    left: 5px;
+}
+
+.box_morse{
+    position: absolute;
+    top: 35px;
+    left: 5px;
+    font-size: 12px;
+}
+
+.box_twotouch_type{
+    position: absolute;
+    top: 35px;
+    left: 5px;
+    font-size: 12px;
+}

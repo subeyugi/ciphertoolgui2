@@ -1,0 +1,52 @@
+<html lang='japanese'>
+    <body>
+        <div class='top_io_bar' id="top_io_bar">
+            暗号化・復号化ツール
+            <button type="button" onclick='saveBtnClicked()'>保存</button>
+            <input type="file" name="" id="file_input" accept=".cip" />
+            注意：未実装、バグあり
+            <a href="https://github.com/subeyugi/ciphertoolgui/blob/main/readme.md" target="_blank">使い方はこちら</a><br><br>
+            <span class='top_half'>
+                <h8>入力文</h8>
+                <button id="copyButton" onclick='inputCopyBtnClicked()'>コピー</button>
+                <span class='top_id' id='top_input_id'></span>
+                <span class='top_error' id='top_input_message'></span>
+                <br>
+                <textarea id='input_text' class='top_text' spellcheck='false' resize='inTextareaResized()'></textarea>
+            </span>
+            <span class='top_half'>
+                <h8>出力文</h8>
+                <button id="copyButton" onclick='outputCopyBtnClicked()'>コピー</button>
+                <span class='top_id' id='top_output_id'></span>
+                <span class='top_error' id='top_output_message'></span><br>
+                <textarea id='output_text' class='top_text' spellcheck='false' readonly='readonly'></textarea>
+            </span>
+        </div>
+
+        <div class="background_grid" id='background_grid'></div>
+        <div class="main_area" id="main_area"></div>
+
+
+        <link rel='stylesheet' href='style.css'>
+        <link rel='stylesheet' href='box_style.css'>
+        <script src='src/class.js'></script>
+        <script src='src/init.js'></script>
+        <script src="lib/encoding.min.js"></script>
+        <script src="src/errorIndication.js"></script>
+        <script src='src/converter.js'></script>
+        <script src="src/script.js"></script>
+        <script src="src/morseConverter.js"></script>
+        <script src="src/stringConverter.js"></script>
+        <script src="src/twoTouchConverter.js"></script>
+        <script src="src/caesarConverter.js"></script>
+        <script src="src/mikakaConverter.js"></script>
+        <script src="src/calcConverter.js"></script>
+        <script src="src/charcodeConverter.js"></script>
+        <script src="src/reverseConverter.js"></script>
+        <script src="src/baseConverter.js"></script>
+        <script src="src/charNumberConverter.js"></script>
+        <script src="src/atbashConverter.js"></script>
+        <script src="src/vigenereConverter.js"></script>
+        <script src="src/dakutenConverter.js"></script>
+    </body>
+</html>

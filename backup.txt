@@ -1,0 +1,110 @@
+<html lang="jananese">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>line test</title>
+    </head>
+
+    <div id="head_area" class="box head_area">
+        <div>
+            暗号入力: <span class="cipher_input" id="cipher_input"></span>
+        </div>
+        <div>
+            暗号出力: <span class="cipher_output" id="result"></span>
+        </div>
+    </div>
+
+    <div id="elem0" class="start_box">
+        <div class="main_tool_name">暗号文/平文</div>
+        <textarea name="" id="" class="text_box">506463423042415522116163021341362354226353243254406513200323</textarea>
+    </div>
+
+    <div id="elem1" class="box calc">
+        <div id="elem1_val" class="main_tool_name">進数変換</div>
+        <input type="number" name="" id="" value="7">進数→<input type="number" name="" id="" value="16">進数
+        <div id="elem2_val" class="box cipher_str">ff123068ff153044308c304b30489b697353ecabc265</div>
+    </div>
+
+    <div id="elem2" class="box strconv">
+        <div class="main_tool_name">文字コード</div>
+        16進数→<select name="select" id="">
+            <option value="a">UTF-16</option>
+        </select>
+        <div id="elem2_val" class="cipher_str">２と５いれかえ魩獓쉥</div>
+    </div>
+
+    <div id="elem3" class="start_box">
+        <div class="main_tool_name">置換</div>
+        <input type="text" name="" id="" value="25">→<input type="text" name="" id="" value="52">
+        <div id="elem2_val" class="cipher_str">322262364614262561440414022353445253343130023661223603131566201</div>
+    </div>
+
+    <div id="elem4" class="box strconv">
+        <div class="main_tool_name">モールス信号</div>
+        <select name="" id="">
+            <option value="a">日本語</option>
+            <option value="a">英語</option>
+        </select>
+        →モールス
+        <div id="elem4_val" class="cipher_str">こんにちは</div>
+    </div>
+
+    <div id="elem5" class="box strconv">
+        <div class="main_tool_name">モールス信号</div>
+        <select name="" id="">
+            <option value="a">日本語</option>
+            <option value="a">英語</option>
+        </select>
+        →モールス
+        <div id="elem5_val" class="cipher_str">4ca9bc5d</div>
+    </div>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style_smartphone.css">
+    <script src="leader-line.min.js"></script>
+
+    <script>
+        new LeaderLine(
+            document.getElementById("elem0"),
+            document.getElementById("elem1"),
+            {color: "#F0F0F0", size: 4}
+        );
+        new LeaderLine(
+            document.getElementById("elem1"),
+            document.getElementById("elem2"),
+            {color: "#F0F0F0", size: 4}
+        );
+        new LeaderLine(
+            document.getElementById("elem2"),
+            document.getElementById("elem3"),
+            {color: "#F0F0F0", size: 4}
+        );
+
+        new LeaderLine(
+            document.getElementById("elem3"),
+            document.getElementById("elem4"),
+            {color: "#F0F0F0", size: 4}
+        );
+
+        new LeaderLine(
+            document.getElementById("elem4"),
+            document.getElementById("elem5"),
+            {color: "#F0F0F0", size: 4}
+        );
+
+        let li = document.getElementsByClassName("box");
+        for(let i = 0; i < li.length; i++){
+            li[i].addEventListener("click", function(){
+                for(let j = 0; j < li.length; j++){
+                    li[j].classList.remove("clicked");
+                }
+                this.classList.add("clicked");
+                if(this.classList.contains("clicked")){
+                    document.getElementById("result").innerText = document.getElementById(this.id + "_val").innerText;
+                }else{
+                    document.getElementById("result").innerText = "";
+                }
+            })
+        }
+    </script>
+</html>

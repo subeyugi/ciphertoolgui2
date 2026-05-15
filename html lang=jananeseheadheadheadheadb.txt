@@ -1,0 +1,119 @@
+<html lang="jananese"><head></head><head></head><body>
+        <div class="top_io_bar">
+            暗号化・復号化ツール　
+            <button type="button" onclick="saveBtnClicked()">保存</button>
+            <input type="file" name="" id="file_input" accept=".cip">
+            注意：未実装、バグあり
+            <a href="https://github.com/subeyugi/ciphertoolgui/blob/main/readme.md" target="_blank">使い方はこちら</a><br><br>
+            <span class="top_half">
+                <h8>入力文</h8>
+                <button id="copyButton" onclick="inputCopyBtnClicked()">コピー</button>
+                <span class="top_id" id="top_input_id">V7C</span>
+                <span class="top_error" id="top_input_message"></span>
+                <br>
+                <textarea id="input_text" class="top_text" spellcheck="false" resize="textareaResized()"></textarea>
+            </span>
+            <span class="top_half">
+                <h8>出力文</h8>
+                <button id="copyButton" onclick="outputCopyBtnClicked()">コピー</button>
+                <span class="top_id" id="top_output_id">HDC</span>
+                <span class="top_error" id="top_output_message">変換前は空文字列にはできません</span><br>
+                <textarea id="output_text" class="top_text" spellcheck="false" readonly="readonly">[]</textarea>
+            </span>
+        </div>
+        <div id="main_area" class="main_area"><div id="box_V7C" class="box" onmousedown="boxClicked(&quot;V7C&quot;)" style="left: 20px; top: 250px">
+            <div id="alr_V7C" class="alert_icon" style="display: none"></div>
+            <div class="del_btn" onclick="delBtnClicked(&quot;V7C&quot;)">×</div>
+            <div class="div_id">V7C</div>
+            <select id="sel_V7C" onchange="typeChanged(&quot;V7C&quot;)">
+                <option value="0"></option>
+                <option value="1">入力</option>
+                <option value="2" class="type_code">文字コード</option>
+                <option value="3" class="type_code">モールス</option>
+                <option value="4" class="type_code">点字</option>
+                <option value="5" class="type_code">2タッチ</option>
+                <option value="6" class="type_code">文字順</option>
+                <option value="7" class="type_strconv">シーザー</option>
+                <option value="8" class="type_strconv">みかか</option>
+                <option value="9" class="type_strconv">文字置換</option>
+                <option value="10" class="type_strconv">アトバシュ</option>
+                <option value="11" class="type_strconv">ビジュネル</option>
+                <option value="13" class="type_strconv">ポリュビオス</option>
+                <option value="14" class="type_strswap">逆順</option>
+                <option value="15" class="type_strswap">結合</option>
+                <option value="16" class="type_strswap">部分文字列</option>
+                <option value="17" class="type_strswap">スキュタレー</option>
+                <option value="18" class="type_strswap">レールフェンス</option>
+                <option value="19" class="type_math">進数変換</option>
+                <option value="20" class="type_math">計算</option>
+            </select>
+            <div class="type_change_btn_L" onclick="preTypeBtnClicked(&quot;V7C&quot;)">&lt;</div>
+            <div class="type_change_btn_R" onclick="nxtTypeBtnClicked(&quot;V7C&quot;)">&gt;</div>
+            <span id="sp1_V7C" class="box_sp"></span>
+            <div id="sp2_V7C" class="box_sp"></div>
+            <div id="sp_option_btn_V7C"></div>
+            <div id="sp_option_V7C"></div>
+            <div id="txt_V7C" class="text_box" readonly="readonly"></div>
+            <div id="btn_V7C" class="plus_button" onclick="plusButtonClicked(&quot;V7C&quot;)"></div>
+        </div><div id="box_HDC" class="box strconv clicked" onmousedown="boxClicked(&quot;HDC&quot;)" style="left: 207px; top: 414px; position: absolute;" draggable="false">
+            <div id="alr_HDC" class="alert_icon" style="display: block;"></div>
+            <div class="del_btn" onclick="delBtnClicked(&quot;HDC&quot;)">×</div>
+            <div class="div_id">HDC</div>
+            <select id="sel_HDC" onchange="typeChanged(&quot;HDC&quot;)">
+                <option value="0"></option>
+                <option value="1">入力</option>
+                <option value="2" class="type_code">文字コード</option>
+                <option value="3" class="type_code">モールス</option>
+                <option value="4" class="type_code">点字</option>
+                <option value="5" class="type_code">2タッチ</option>
+                <option value="6" class="type_code">文字順</option>
+                <option value="7" class="type_strconv">シーザー</option>
+                <option value="8" class="type_strconv">みかか</option>
+                <option value="9" class="type_strconv">文字置換</option>
+                <option value="10" class="type_strconv">アトバシュ</option>
+                <option value="11" class="type_strconv">ビジュネル</option>
+                <option value="13" class="type_strconv">ポリュビオス</option>
+                <option value="14" class="type_strswap">逆順</option>
+                <option value="15" class="type_strswap">結合</option>
+                <option value="16" class="type_strswap">部分文字列</option>
+                <option value="17" class="type_strswap">スキュタレー</option>
+                <option value="18" class="type_strswap">レールフェンス</option>
+                <option value="19" class="type_math">進数変換</option>
+                <option value="20" class="type_math">計算</option>
+            </select>
+            <div class="type_change_btn_L" onclick="preTypeBtnClicked(&quot;HDC&quot;)">&lt;</div>
+            <div class="type_change_btn_R" onclick="nxtTypeBtnClicked(&quot;HDC&quot;)">&gt;</div>
+            <span id="sp1_HDC" class="box_sp"></span>
+            <div id="sp2_HDC" class="box_sp"><input type="text" id="from_HDC" oninput="optionChanged(&quot;from&quot;, &quot;HDC&quot;)">                    ↓                    <input type="text" id="to_HDC" oninput="optionChanged(&quot;to&quot;, &quot;HDC&quot;)"></div>
+            <div id="sp_option_btn_HDC"><div class="show_option_btn" onclick="optionButtonClicked(&quot;HDC&quot;)">option</div></div>
+            <div id="sp_option_HDC"></div>
+            <div id="txt_HDC" class="text_box" readonly="readonly">[]</div>
+            <div id="btn_HDC" class="plus_button" onclick="plusButtonClicked(&quot;HDC&quot;)"></div>
+        </div></div>
+
+        <link rel="stylesheet" href="style.css">
+        <script src="src/variables.js"></script>
+        <script src="lib/leader-line.min.js"></script>
+        <script src="lib/encoding.min.js"></script>
+        <script src="lib/anim-event.min.js"></script>
+        <script src="src/errorIndication.js"></script>
+        <script src="src/converter.js"></script>
+        <script src="src/class.js"></script>
+        <script src="src/main_script.js"></script><svg xmlns="http://www.w3.org/2000/svg" version="1.1" id="leader-line-defs"><style>.leader-line{position:absolute;overflow:visible!important;pointer-events:none!important;font-size:16px}#leader-line-defs{width:0;height:0;position:absolute;left:0;top:0}.leader-line-line-path{fill:none}.leader-line-mask-bg-rect{fill:white}.leader-line-caps-mask-anchor,.leader-line-caps-mask-marker-shape{fill:black}.leader-line-caps-mask-anchor{stroke:black}.leader-line-caps-mask-line,.leader-line-plugs-face{stroke:rgba(0,0,0,0)}.leader-line-line-mask-shape{stroke:white}.leader-line-line-outline-mask-shape{stroke:black}.leader-line-plug-mask-shape{fill:white;stroke:black}.leader-line-plug-outline-mask-shape{fill:black;stroke:white}.leader-line-areaAnchor{position:absolute;overflow:visible!important}</style><defs><circle id="leader-line-disc" cx="0" cy="0" r="5"></circle><rect id="leader-line-square" x="-5" y="-5" width="10" height="10"></rect><polygon id="leader-line-arrow1" points="-8,-8 8,0 -8,8 -5,0"></polygon><polygon id="leader-line-arrow2" points="-4,-8 4,0 -4,8 -7,5 -2,0 -7,-5"></polygon><polygon id="leader-line-arrow3" points="-4,-5 8,0 -4,5"></polygon><g id="leader-line-hand"><path style="fill: #fcfcfc" d="M9.19 11.14h4.75c1.38 0 2.49-1.11 2.49-2.49 0-.51-.15-.98-.41-1.37h1.3c1.38 0 2.49-1.11 2.49-2.49s-1.11-2.53-2.49-2.53h1.02c1.38 0 2.49-1.11 2.49-2.49s-1.11-2.49-2.49-2.49h14.96c1.37 0 2.49-1.11 2.49-2.49s-1.11-2.49-2.49-2.49H16.58C16-9.86 14.28-11.14 9.7-11.14c-4.79 0-6.55 3.42-7.87 4.73H-2.14v13.23h3.68C3.29 9.97 5.47 11.14 9.19 11.14L9.19 11.14Z"></path><path style="fill: black" d="M13.95 12c1.85 0 3.35-1.5 3.35-3.35 0-.17-.02-.34-.04-.51h.07c1.85 0 3.35-1.5 3.35-3.35 0-.79-.27-1.51-.72-2.08 1.03-.57 1.74-1.67 1.74-2.93 0-.59-.16-1.15-.43-1.63h12.04c1.85 0 3.35-1.5 3.35-3.35 0-1.85-1.5-3.35-3.35-3.35H17.2C16.26-10.93 13.91-12 9.7-12 5.36-12 3.22-9.4 1.94-7.84c0 0-.29.33-.5.57-.63 0-3.58 0-3.58 0C-2.61-7.27-3-6.88-3-6.41v13.23c0 .47.39.86.86.86 0 0 2.48 0 3.2 0C2.9 10.73 5.29 12 9.19 12L13.95 12ZM9.19 10.28c-3.46 0-5.33-1.05-6.9-3.87-.15-.27-.44-.44-.75-.44 0 0-1.81 0-2.82 0V-5.55c1.06 0 3.11 0 3.11 0 .25 0 .44-.06.61-.25l.83-.95c1.23-1.49 2.91-3.53 6.43-3.53 3.45 0 4.9.74 5.57 1.72h-4.3c-.48 0-.86.38-.86.86s.39.86.86.86h22.34c.9 0 1.63.73 1.63 1.63 0 .9-.73 1.63-1.63 1.63H15.83c-.48 0-.86.38-.86.86 0 .47.39.86.86.86h2.52c.9 0 1.63.73 1.63 1.63s-.73 1.63-1.63 1.63h-3.12c-.48 0-.86.38-.86.86 0 .47.39.86.86.86h2.11c.88 0 1.63.76 1.63 1.67 0 .9-.73 1.63-1.63 1.63h-3.2c-.48 0-.86.39-.86.86 0 .47.39.86.86.86h1.36c.05.16.09.34.09.51 0 .9-.73 1.63-1.63 1.63C13.95 10.28 9.19 10.28 9.19 10.28Z"></path></g><g id="leader-line-crosshair"><path d="M0-78.97c-43.54 0-78.97 35.43-78.97 78.97 0 43.54 35.43 78.97 78.97 78.97s78.97-35.43 78.97-78.97C78.97-43.54 43.55-78.97 0-78.97ZM76.51-1.21h-9.91v-9.11h-2.43v9.11h-11.45c-.64-28.12-23.38-50.86-51.5-51.5V-64.17h9.11V-66.6h-9.11v-9.91C42.46-75.86 75.86-42.45 76.51-1.21ZM-1.21-30.76h-9.11v2.43h9.11V-4.2c-1.44.42-2.57 1.54-2.98 2.98H-28.33v-9.11h-2.43v9.11H-50.29C-49.65-28-27.99-49.65-1.21-50.29V-30.76ZM-30.76 1.21v9.11h2.43v-9.11H-4.2c.42 1.44 1.54 2.57 2.98 2.98v24.13h-9.11v2.43h9.11v19.53C-27.99 49.65-49.65 28-50.29 1.21H-30.76ZM1.22 30.75h9.11v-2.43h-9.11V4.2c1.44-.42 2.56-1.54 2.98-2.98h24.13v9.11h2.43v-9.11h19.53C49.65 28 28 49.65 1.22 50.29V30.75ZM30.76-1.21v-9.11h-2.43v9.11H4.2c-.42-1.44-1.54-2.56-2.98-2.98V-28.33h9.11v-2.43h-9.11V-50.29C28-49.65 49.65-28 50.29-1.21H30.76ZM-1.21-76.51v9.91h-9.11v2.43h9.11v11.45c-28.12.64-50.86 23.38-51.5 51.5H-64.17v-9.11H-66.6v9.11h-9.91C-75.86-42.45-42.45-75.86-1.21-76.51ZM-76.51 1.21h9.91v9.11h2.43v-9.11h11.45c.64 28.12 23.38 50.86 51.5 51.5v11.45h-9.11v2.43h9.11v9.91C-42.45 75.86-75.86 42.45-76.51 1.21ZM1.22 76.51v-9.91h9.11v-2.43h-9.11v-11.45c28.12-.64 50.86-23.38 51.5-51.5h11.45v9.11h2.43v-9.11h9.91C75.86 42.45 42.45 75.86 1.22 76.51Z"></path><path d="M0 83.58-7.1 96 7.1 96Z"></path><path d="M0-83.58 7.1-96-7.1-96"></path><path d="M83.58 0 96 7.1 96-7.1Z"></path><path d="M-83.58 0-96-7.1-96 7.1Z"></path></g></defs></svg><svg class="leader-line" viewBox="195.5 282.5 109.32 133.638" style="left: 195.5px; top: 282.5px; width: 109.32px; height: 133.638px;"><defs><path id="leader-line-1-line-path" class="leader-line-line-path" d="M 205.5 292.5 L 294.82035569240026 406.1379394411166"></path><use id="leader-line-1-line-shape" style="stroke-width: 5px;" href="#leader-line-1-line-path"></use><g id="leader-line-1-caps"><path class="leader-line-caps-mask-anchor" style="display: inline; stroke-width: 0px;" d="M 20 250 L 208 250 L 208 335 L 20 335 Z"></path><path class="leader-line-caps-mask-anchor"></path><use href="#leader-line-1-line-shape" class="leader-line-caps-mask-line"></use></g><marker id="leader-line-1-caps-mask-marker-0" markerUnits="strokeWidth"><use class="leader-line-caps-mask-marker-shape"></use></marker><marker id="leader-line-1-caps-mask-marker-1" markerUnits="strokeWidth"><use class="leader-line-caps-mask-marker-shape"></use></marker><rect id="leader-line-1-mask-bg-rect" width="100%" height="100%" class="leader-line-mask-bg-rect" x="195.5" y="282.5"></rect><mask id="leader-line-1-line-mask" x="195.5px" y="282.5px" width="100%" height="100%" maskUnits="userSpaceOnUse"><use href="#leader-line-1-mask-bg-rect"></use><use href="#leader-line-1-line-path" class="leader-line-line-mask-shape" style="display: none;"></use><use href="#leader-line-1-caps" style="display: inline;"></use></mask><mask id="leader-line-1-line-outline-mask" x="0px" y="0px" width="100%" height="100%" maskUnits="userSpaceOnUse"><use href="#leader-line-1-mask-bg-rect"></use><use href="#leader-line-1-line-path" class="leader-line-line-outline-mask-shape"></use><use href="#leader-line-1-caps" style="display: inline;"></use></mask><mask id="leader-line-1-plug-mask-0" x="0px" y="0px" width="0px" height="0px" maskUnits="userSpaceOnUse"><use class="leader-line-plug-mask-shape"></use></mask><mask id="leader-line-1-plug-mask-1" x="0px" y="0px" width="0px" height="0px" maskUnits="userSpaceOnUse"><use class="leader-line-plug-mask-shape"></use></mask><mask id="leader-line-1-plug-outline-mask-0" x="0px" y="0px" width="0px" height="0px" maskUnits="userSpaceOnUse"><use class="leader-line-plug-outline-mask-shape"></use></mask><mask id="leader-line-1-plug-outline-mask-1" x="0px" y="0px" width="0px" height="0px" maskUnits="userSpaceOnUse"><use class="leader-line-plug-outline-mask-shape"></use></mask><marker id="leader-line-1-plug-marker-0" markerUnits="strokeWidth"><g><use></use><use style="mask: url(&quot;#leader-line-1-plug-outline-mask-0&quot;); display: none;"></use></g></marker><marker id="leader-line-1-plug-marker-1" orient="auto" markerWidth="4" markerHeight="4" markerUnits="strokeWidth" viewBox="-8 -8 16 16"><g><use href="#leader-line-arrow1" style="fill: rgb(160, 160, 160);"></use><use style="mask: url(&quot;#leader-line-1-plug-outline-mask-1&quot;); display: none;"></use></g></marker></defs><g><use href="#leader-line-1-line-shape" style="stroke: rgb(160, 160, 160); mask: url(&quot;#leader-line-1-line-mask&quot;);"></use><use href="#leader-line-1-line-shape" style="mask: url(&quot;#leader-line-1-line-outline-mask&quot;); display: none;"></use><use href="#leader-line-1-line-shape" class="leader-line-plugs-face" style="display: inline; marker-end: url(&quot;#leader-line-1-plug-marker-1&quot;);"></use></g></svg>
+        <script src="src/morseConverter.js"></script>
+        <script src="src/stringConverter.js"></script>
+        <script src="src/twoTouchConverter.js"></script>
+        <script src="src/caesarConverter.js"></script>
+        <script src="src/mikakaConverter.js"></script>
+        <script src="src/calcConverter.js"></script>
+        <script src="src/charcodeConverter.js"></script>
+        <script src="src/reverseConverter.js"></script>
+        <script src="src/baseConverter.js"></script>
+        <script src="src/charNumberConverter.js"></script>
+        <script src="src/atbashConverter.js"></script>
+        <script src="src/vigenereConverter.js"></script>
+        <script src="src/dakutenConverter.js"></script>
+    
+
+
+</body></html>

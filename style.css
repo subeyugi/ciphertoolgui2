@@ -1,0 +1,159 @@
+/*上画面と背景*/
+
+*{
+    font-family: "Noto Sans", "メイリオ", sans-serif;
+}
+
+.top_io_bar{
+    width: 100%;
+    height: 130px;
+    padding: 10px;
+    background-color: #313034;
+    position: sticky;
+    font-size: large;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    /* border-bottom: 10px solid #A0A0A0; */
+}
+
+body{
+    background-color: #101010;
+    color: white;
+    padding: 0px;
+    margin: 0px;
+}
+
+.gridline_horizontal{
+    margin: 0px;
+    padding: 0px;
+    position: absolute;
+    display: flex;
+    background-color: #303030;
+    width: 100%;
+    height: 1px;
+}
+
+.gridline_vertical{
+    margin: 0px;
+    padding: 0px;
+    position: absolute;
+    display: flex;
+    background-color: #303030;
+    width: 1px;
+    height: 1000px;
+}
+
+.scale{
+    position: absolute;
+    background-color: transparent;
+}
+
+.main_area{
+    /* position: absolute; */
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    height: 2000px;
+}
+
+.background_grid{
+    position: relative;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    height: 2000px;
+}
+
+
+
+.text_box{
+    background-color: #101010;
+    color: white;
+    width: calc(100% - 3px);
+    height: max-content;
+    resize: none;
+    margin-top: 10px;
+    padding: 2px;
+    padding-top: 4px;
+    height: 25px;
+    font-size: small;
+    white-space: nowrap;
+    overflow:hidden;
+}
+
+
+input{
+    width: auto;
+    height: auto;
+    background-color: #000000;
+    color: white;
+    user-select: none;
+}
+
+input[type='text']{
+    width: 100%;
+}
+
+.top_half{
+    width: 50%;
+    float: left;
+}
+
+.top_error{
+    color: #FF0000;
+}
+
+a:link{
+    color: #ffef5e;
+}
+
+a:visited{
+    color: #ff7741;
+}
+
+.show_option_btn{
+    position: absolute;
+    left: 150px;
+    top: 43px;
+    width: 33px;
+    height: 15px;
+    font-size: x-small;
+    color: #000000;
+    background-color: #FFFFFF30;
+}
+
+.show_option_btn:hover{
+    background-color: #FF000030;
+}
+
+.sepInput{
+    margin-top: 10px;
+    padding: 0px;
+    width: 30px;
+    height: 25px;
+    resize: none;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.textarea::-webkit-scrollbar{
+  display:none;
+}
+
+textarea{
+    user-select: none;
+    background-color: #000000;
+    font-family: Consolas, monospace;
+    font-size: medium;
+    width: calc(100% - 40px);
+    color: white;
+    padding: 0px;
+    margin: 0px;
+    min-height: 40px;
+    resize: vertical;
+}
+
+input[type='file']{
+    background-color: transparent;
+}
+
