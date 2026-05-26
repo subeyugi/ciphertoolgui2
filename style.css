@@ -5,9 +5,9 @@
 }
 
 .top_io_bar{
-    width: 100%;
+    width: calc(100%-40px);
     height: 130px;
-    padding: 10px;
+    padding: 20px;
     background-color: #313034;
     position: sticky;
     font-size: large;
@@ -22,6 +22,7 @@ body{
     color: white;
     padding: 0px;
     margin: 0px;
+    width: 100%;
 }
 
 .gridline_horizontal{
@@ -47,10 +48,11 @@ body{
 .scale{
     position: absolute;
     background-color: transparent;
+    user-select: none;
 }
 
 .main_area{
-    /* position: absolute; */
+    position: relative;
     margin: 0px;
     padding: 0px;
     width: 100%;
@@ -91,9 +93,9 @@ input{
     user-select: none;
 }
 
-input[type='text']{
+/* input[type='text']{
     width: 100%;
-}
+} */
 
 .top_half{
     width: 50%;
@@ -145,7 +147,7 @@ textarea{
     background-color: #000000;
     font-family: Consolas, monospace;
     font-size: medium;
-    width: calc(100% - 40px);
+    width: calc(100% - 60px);
     color: white;
     padding: 0px;
     margin: 0px;
@@ -153,7 +155,10 @@ textarea{
     resize: vertical;
 }
 
+#output_text{
+    resize:none;
+}
+
 input[type='file']{
     background-color: transparent;
 }
-

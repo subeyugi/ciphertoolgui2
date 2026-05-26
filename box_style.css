@@ -8,21 +8,7 @@
     margin: 5px;
     padding: 5px;
     user-select: none;
-    background-color: #ff3030;
-}
-
-.del_btn{
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    top: 0px;
-    left: 147px;
-    font-size: small;
-}
-
-.del_btn:hover{
-    color: red;
+    background-color: #313131;
 }
 
 .alert_icon{
@@ -46,6 +32,8 @@ select{
     position: absolute;
     top: 5px;
     left: 5px;
+    background-color: #303030;
+    color: #FFFFFF;
 }
 
 .text_box{
@@ -53,8 +41,38 @@ select{
     top: 85px;
     left: 5px;
     height: 25px;
-    width: 175;
+    width: 175px;
+    user-select: none;
 }
+
+.up_btn{
+    position: absolute;
+    width: 13px;
+    height: 13px;
+    top: 5px;
+    left:125px;
+    padding: 0px;
+    font-size: 10px;
+}
+
+.up_btn:hover{
+    color: #FF0000;
+}
+
+.down_btn{
+    position: absolute;
+    width: 13px;
+    height: 13px;
+    top: 16px;
+    left:125px;
+    padding: 0px;
+    font-size: 10px;
+}
+
+.down_btn:hover{
+    color: #FF0000;
+}
+
 
 /*特殊*/
 .box_charcode_code{
@@ -89,4 +107,87 @@ select{
     top: 35px;
     left: 5px;
     font-size: 12px;
+}
+
+.transparent{
+    position: absolute;
+    height: 140px;
+    width: 200px;
+    background-color: #FFFFFF11;
+}
+
+.div_fromid{
+    position: absolute;
+    height: 25px;
+    width: 40px;
+    top: 7px;
+    left: 145px;
+    font-size: 14px;
+}
+
+.num_input{
+    position: absolute;
+    top: 35px;
+    left: 5px;
+    width: 170px;
+    user-select: none;
+}
+
+.strconvFrom{
+    position: absolute;
+    top: 35px;
+    left: 25px;
+    width: 150px;
+}
+
+.strconvTo{
+    position: absolute;
+    top: 65px;
+    left: 25px;
+    width: 150px;
+}
+
+.strconvArrow{
+    position: absolute;
+    top: 65px;
+    left: 5px;
+}
+
+.box_mikaka{
+    position: absolute;
+    top: 35px;
+    left: 5px;
+}
+
+/* type変更による背景色変更 */
+.code{
+    background-color: #361c1c;
+}
+
+.strconv{
+    background-color: #1c3623;
+}
+
+.strswap{
+    background-color: #36361c;
+}
+
+.math{
+    background-color: #1c2336;
+}
+
+.type_code{
+    background-color: #361c1c;
+}
+
+.type_strconv{
+    background-color: #1c3623;
+}
+
+.type_strswap{
+    background-color: #36341c;
+}
+
+.type_math{
+    background-color: #1c2336;
 }
