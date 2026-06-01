@@ -22,7 +22,7 @@ function updateAllText(){
             }
         }
     });
-    console.log("que", que);
+    //console.log("que", que);
 
     //トポロジカルソート
     while(que.length - queIdx > 0){
@@ -99,6 +99,9 @@ function updateText(to_id){
     }
 
     switch(toObj.type){
+        case CipherType.none:
+            toObj.text = fromText;
+            break;
         case CipherType.charcode:
             switch(options.mode){
                 case 'decodeHex':
@@ -147,6 +150,20 @@ function updateText(to_id){
                     break;
             }
             break;
+        case CipherType.tenji:
+            switch(options.mode){
+                case 'tenji2jp':
+                    tmp = decodeTenjiJP(fromTextSplit, true);
+                    toObj.text = joinText(tmp.result);
+                    toObj.message = tmp.message;
+                    break;
+                case 'jp2tenji':
+                    tmp = encodeTenjiJP(fromTextSplit, true);
+                    toObj.text = joinText(tmp.result);
+                    toObj.message = tmp.message;
+                    break;
+            }
+            break;
         case CipherType.twotouch:
             switch(options.mode){
                 case 'num2char':
@@ -179,6 +196,7 @@ function updateText(to_id){
                     toObj.message = tmp.message;
                     break;
                 case 'alpha2num':
+                    console.log("alpha2num", fromTextSplit);
                     tmp = alpha2num(fromTextSplit, true);
                     toObj.text = joinText(tmp.result);
                     toObj.message = tmp.message;
@@ -220,7 +238,7 @@ function updateText(to_id){
             toObj.message = tmp.message;
             break;
         case CipherType.atbash:
-            tmp = convertAtbash(fromTextSplit, options.from, options.to, true);
+            tmp = convertAtbash(fromTextSplit, true);
             toObj.text = joinText(tmp.result);
             toObj.message = tmp.message;
             break;
@@ -263,7 +281,7 @@ function updateText(to_id){
             break;
     }
 
-    console.log("outputtext: ", outputId, toObj.text);
+    //console.log("outputtext: ", outputId, toObj.text);
     document.getElementById('txt_' + to_id).innerText = toObj.text;
     document.getElementById('output_text').innerText = toObj.text;
     if(toObj.message == ''){

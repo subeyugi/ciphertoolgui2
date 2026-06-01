@@ -108,7 +108,7 @@ function alpha2num(vec, isVec = false){
                 result[i].push([]);
                 let tmp = alpha2num(vec[0][i][j]);
                 result[i][j] = tmp.result;
-                if(message == '') message = tmp.result;
+                if(message == '') message = tmp.message;
             }
         }
         return new ConverterResult(result, message);
@@ -136,7 +136,7 @@ function aiu2num(vec, isVec){
                 result[i].push([]);
                 let tmp = aiu2num(vec[0][i][j]);
                 result[i][j] = tmp.result;
-                if(message == '') message = tmp.result;
+                if(message == '') message = tmp.message;
             }
         }
         return new ConverterResult(result, message);
@@ -165,7 +165,7 @@ function iroha2num(vec, isVec){
                 result[i].push([]);
                 let tmp = iroha2num(vec[0][i][j]);
                 result[i][j] = tmp.result;
-                if(message == '') message = tmp.result;
+                if(message == '') message = tmp.message;
             }
         }
         return new ConverterResult(result, message);
@@ -183,3 +183,5 @@ function iroha2num(vec, isVec){
         return new ConverterResult(result, message);
     }
 }
+
+console.log(alpha2num([[["abcde"]]], true));

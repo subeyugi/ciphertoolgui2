@@ -112,7 +112,7 @@ function encodeMorseJP(s, isVec=false){
         }
         return new ConverterResult(s, message);
     }else{
-        s = splitDakuten(s);
+        s = splitDakuten(s, false);
         for(let i = 0; i < s.length; i++){
             if(i != 0) result += '　';
             let c = hiragana2morseMap.get(s[i]);
@@ -164,7 +164,7 @@ function decodeMorseJP(s, isVec=false){
                 if(message == '') message = `"${v[i]}"を変換できません`;
             }
         }
-        result = joinDakuten(result);
+        result = joinDakuten(result, false);
         return new ConverterResult(result, message);
     }
 }

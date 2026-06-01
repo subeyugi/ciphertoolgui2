@@ -5,6 +5,7 @@
 //文字列を指定文字コードで16進数に変換する
 //s: 文字列
 //charcode: 文字コード。SJIS, ASCII, EUCJP, UTF8, UTF16, UNICODEのいずれか
+
 function encodeStrHex(s, charcode, isVec=false){
     if(isVec){
         for(let i = 0; i < s.length; ++i){
@@ -47,6 +48,15 @@ function decodeStrHex(s, charcode, isVec=false){
         }
         return new ConverterResult(s, message);
     }else{
+        console.log(rletters);
+        for(let i = 0; i < s.length; ++i){
+            let tmp = rletters.get(s[i]);
+            console.log(s[i], tmp);
+            if(tmp == undefined || (!(0 <= tmp && tmp < 16))){
+                return new ConverterResult(getErrorStr(s), `0~9,a~fで構成される文字列を入力してください`);
+            }
+        }
+
         let message = '';
         let s_rem = '';
         if(charcode == 'ASCII'){
@@ -130,6 +140,11 @@ function decodeStrBin(s, charcode, isVec=false){
         }
         return new ConverterResult(s, message);
     }else{
+        for(let i = 0; i < s.length; ++i){
+            if(!(s[i] == '0'|| s[i] == '1')){
+                return new ConverterResult(getErrorStr(s), `0,1で構成される文字列を入力してください`);
+            }
+        }
         let message = '';
         let hex = convertBase(s, 2, 16);
         return decodeStrHex(hex.result, charcode);

@@ -2,10 +2,12 @@ let gridStartTop = 40;
 let gridStartLeft = 50;
 let gridHeight = 140;
 let gridWidth = 200;
-let gridRowCount = 20;
-let gridColumnCount = 9;
+let gridRowCount = 10;
+let gridColumnCount = Math.floor((window.innerWidth - gridStartLeft) / gridWidth);
 let inputId = "A1";
 let outputId = "A1";
+let nowSelectId = "A1";
+let ctrlPressed = false;
 
 let cipherObjects = new Map();
 
@@ -49,15 +51,16 @@ function fromXY(x, y){
 
 //方眼の表示
 let grid = document.getElementById('main_area');
+//縦線
 for(let i = 0; i < gridColumnCount + 1; i++){
     grid.insertAdjacentHTML('beforeend', `<div class="gridline_vertical" style="top:${gridStartTop}px; left:${gridStartLeft + gridWidth * i}px; height:${gridHeight * gridRowCount}px"></div>`);
     if(i > 0){
         grid.insertAdjacentHTML('beforeend', `<div class="scale" style="top:${gridStartTop - 30}px; left:${gridStartLeft + gridWidth * (i - 0.5)}px">${String.fromCharCode(64 + i)}</div>`);
     }
 }
-
+//横線
 for(let i = 0; i < gridRowCount + 1; i++){
-    grid.insertAdjacentHTML('beforeend', `<div class="gridline_horizontal" style="top:${gridStartTop + gridHeight * i}px; left:${gridStartLeft}px; width:${gridWidth * gridColumnCount - 10}px"></div>`);
+    grid.insertAdjacentHTML('beforeend', `<div class="gridline_horizontal" style="top:${gridStartTop + gridHeight * i}px; left:${gridStartLeft}px; width:${gridWidth * gridColumnCount}px"></div>`);
     if(i > 0){
         grid.insertAdjacentHTML('beforeend', `<div class="scale" style="left:${gridStartLeft - 30}px; top:${gridStartTop + gridHeight * (i - 0.5) - 10}px">${i}</div>`);
     }

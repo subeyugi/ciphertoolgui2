@@ -36,13 +36,37 @@ select{
     color: #FFFFFF;
 }
 
+.box_sp{
+    position: absolute;
+    padding-left: 5px;
+    margin: 0px;
+    top: 35px;
+    left: 0px;
+    font-size: 14px;
+}
+
 .text_box{
     position: absolute;
     top: 85px;
     left: 5px;
     height: 25px;
     width: 175px;
+    font-size: 12px;
+    line-height: 12px;
     user-select: none;
+    text-wrap: wrap; 
+    overflow-wrap: break-word;
+}
+
+.text_box_large{
+    position: absolute;
+    top: 25px;
+    left: 5px;
+    height: 85px;
+    width: 175px;
+    user-select: none;
+    text-wrap: wrap;
+    overflow-wrap: break-word;
 }
 
 .up_btn{
@@ -73,32 +97,23 @@ select{
     color: #FF0000;
 }
 
-
-/*特殊*/
-.box_charcode_code{
+.cursorBox{
+    display: none;
     position: absolute;
-    top: 35px;
-    left:5px;
-    font-size: 12px;
+    color: #FFFFFF;
+    font-size: 20px;
+    width: 180px;
+    height: 120px;
+    margin: 5px;
+    padding: 5px;
+    user-select: none;
+    background-color: #161616;
+    text-align: center;
 }
 
+/*optionごと*/
 .box_charcode_option{
-    position: absolute;
-    top: 35px;
     left: 85px;
-    font-size: 12px;
-}
-
-.box_charIndex{
-    position: absolute;
-    top: 35px;
-    left: 5px;
-}
-
-.box_morse{
-    position: absolute;
-    top: 35px;
-    left: 5px;
     font-size: 12px;
 }
 
@@ -125,11 +140,17 @@ select{
     font-size: 14px;
 }
 
-.num_input{
-    position: absolute;
+.num_input_from{
     top: 35px;
     left: 5px;
-    width: 170px;
+    width: 40px;
+    user-select: none;
+}
+
+.num_input_to{
+    top: 35px;
+    left: 100px;
+    width: 40px;
     user-select: none;
 }
 
@@ -159,29 +180,100 @@ select{
     left: 5px;
 }
 
+.boxSpElem{
+    position: static;
+    height: 22px;
+    font-size: 12px;
+}
+
+.boxSpInput{
+    position: static;
+    height: 22px;
+    width: 170px;
+    font-size: 12px;
+    background-color: #303030;
+}
+
+.boxSpInput2{
+    position: static;
+    margin-left: 20px;
+    height: 22px;
+    width: 150px;
+    font-size: 12px;
+    background-color: #303030;
+}
+
+.boxSpInputNum{
+    position: static;
+    height: 22px;
+    width: 40px;
+    font-size: 12px;
+    background-color: #303030;
+}
+
+.boxSpArrow{
+    position: absolute;
+    left: 5px;
+    top: 32px;
+}
+
+.select_element{
+    display: inline-block;
+    width: fit-content;
+    padding-left: 2px;
+    padding-right: 2px;
+    background-color: #303030;
+}
+
 /* type変更による背景色変更 */
+
+.box.clicked{
+    background-color: #505050;
+}
+
 .code{
     background-color: #361c1c;
+}
+
+.code.clicked{
+    background-color: #523333;
 }
 
 .strconv{
     background-color: #1c3623;
 }
 
+.strconv.clicked{
+    background-color: #354b3b;
+}
+
 .strswap{
     background-color: #36361c;
+}
+
+.strswap.clicked{
+    background-color: #53533a;
 }
 
 .math{
     background-color: #1c2336;
 }
 
+.math.clicked{
+    background-color: #242b3a;
+}
+
+/* セレクト画面 */
 .type_code{
     background-color: #361c1c;
 }
 
 .type_strconv{
     background-color: #1c3623;
+}
+
+.type_strconv.clicked{
+    background-color: #3d5543;
 }
 
 .type_strswap{
@@ -191,3 +283,4 @@ select{
 .type_math{
     background-color: #1c2336;
 }
+

@@ -48,6 +48,12 @@ function convertBase(s, fromBase, toBase, isVec = false){
         }
         return new ConverterResult(s, message);
     }else{
+        if(!(2 <= fromBase && fromBase <= 36)){
+            return new ConverterResult(getErrorStr(s), "2進数~36進数を設定してください");
+        }
+        if(!(2 <= toBase && toBase <= 36)){
+            return new ConverterResult(getErrorStr(s), "2進数~36進数を設定してください");
+        }
         let base10 = toBase10(s, fromBase);
         if(base10.message != ''){
             return convertBase(getErrorStr(s), base10.message);

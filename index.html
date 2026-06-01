@@ -7,7 +7,7 @@
 <html lang='japanese'>
     <body>
         <div class='top_io_bar' id="top_io_bar">
-            暗号化・復号化ツール2
+            暗号化・復号化ツール2.0
             <button type="button" onclick='saveBtnClicked()'>保存</button>
             <input type="file" name="" id="file_input" accept=".cip" />
             注意：未実装、バグあり
@@ -29,7 +29,9 @@
             </span>
         </div>
 
-        <div class="main_area" id="main_area"></div>
+        <div class="main_area" id="main_area">
+            <div id='cursor' class='cursorBox'>Move</div>
+        </div>
 
         <script src='src/class.js'></script>
         <script src="lib/encoding.min.js"></script>
@@ -47,6 +49,8 @@
         <script src="cipher_convert/atbashConverter.js"></script>
         <script src="cipher_convert/vigenereConverter.js"></script>
         <script src="cipher_convert/dakutenConverter.js"></script>
+        <script src="cipher_convert/tenjiConverter.js"></script>
+        <script src="cipher_convert/polybiusConverter.js"></script>
         <script src="src/errorIndication.js"></script>
         <script src='src/init.js'></script>
         <script src="src/script.js"></script>
