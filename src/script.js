@@ -1,6 +1,4 @@
-let selectFromId = undefined;
-
-//クリックしたとき
+//boxClicked クリックしたとき
 document.getElementById("main_area").addEventListener("mousedown", (e) =>{
     selectFromId = undefined;
     let rect = e.currentTarget.getBoundingClientRect();
@@ -15,12 +13,15 @@ document.getElementById("main_area").addEventListener("mousedown", (e) =>{
         if(cipherObjects.get(position.id).type == CipherType.input){
             inputId = position.id;
             document.getElementById("top_input_id").innerText = inputId;
-            document.getElementById(`box_${position.id}`).classList.add('clicked');
+            document.getElementById("input_text").value = cipherObjects.get(inputId).text;
+            document.getElementById("top_input_length").innerText = getStrLength(cipherObjects.get(inputId).text);
+            document.getElementById(`box_${inputId}`).classList.add('clicked');
             nowSelectId = position.id;
         }else{
             outputId = position.id;
             document.getElementById("top_output_id").innerText = outputId;
-            document.getElementById("output_text").innerText = cipherObjects.get(outputId).text;
+            document.getElementById("output_text").value = cipherObjects.get(outputId).text;
+            document.getElementById("top_output_length").innerText = getStrLength(cipherObjects.get(outputId).text);
             document.getElementById(`box_${position.id}`).classList.add('clicked');
             nowSelectId = position.id;
         }
@@ -104,9 +105,10 @@ function typeChanged(id){
     cipherObjects.get(id).changeType(type);
 }
 
-document.getElementById("input_text").addEventListener("keyup", (e)=>{
-    cipherObjects.get("A1").text = document.getElementById("input_text").value;
-    document.getElementById("txt_A1").innerText = document.getElementById("input_text").value;
+document.getElementById('input_text').addEventListener('keyup', (e)=>{
+    cipherObjects.get(inputId).text = document.getElementById('input_text').value;
+    document.getElementById(`txt_${inputId}`).innerText = document.getElementById('input_text').value;
+    document.getElementById("top_input_length").innerText = getStrLength(document.getElementById('input_text').value);
     updateAllText();
 });
 
@@ -114,15 +116,30 @@ document.getElementById("input_text").addEventListener("keyup", (e)=>{
 const resizeObserver = new ResizeObserver(entries => {
     // リサイズされた要素の寸法を取得
     const { width, height } = entries[0].contentRect;
-    document.getElementById("output_text").style.height = `${height+2}px`;
-    document.getElementById("top_io_bar").style.height = `${height + 85}px`;
+    document.getElementById('output_text').style.height = `${height + 2}px`;
+    document.getElementById('top_io_bar').style.height = `${height + 85}px`;
 });
 resizeObserver.observe(document.getElementById('input_text'));
 
 function saveBtnClicked(){
+    let text = '';
+    let result = [];
     cipherObjects.forEach((val, key)=>{
         console.log(val);
+        result.push(val);
     });
+
+    var date = new Date();
+    var year = date.getFullYear();
+    const blob = new Blob([JSON.stringify(result, undefined, 4)], { type: "text/plain"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `ciphertool-${date.getFullYear()}${String(date.getMonth()+1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
 }
 
 //入出力のコピー
@@ -186,4 +203,28 @@ document.addEventListener('keyup', (event) => {
     if(selectFromId != undefined){
         document.getElementById('cursor').innerText = 'New';
     }
+});
+
+//ファイル読み込み
+document.getElementById('file_input').addEventListener('change', (e) => {
+    let file = e.target.files[0];
+    let reader = new FileReader();
+    reader.readAsText(file);
+    reader.onload = function(e){
+        let result = JSON.parse(reader.result);
+        cipherObjects.forEach((val, id) => {
+            document.getElementById(`box_${id}`).remove();
+        });
+        cipherObjects.clear();
+
+        for(let i = 0; i < result.length; i++){
+            let obj = new CipherObject();
+            obj.updateFromJSON(result[i]);
+            cipherObjects.set(obj.id, obj);
+            document.getElementById('main_area').insertAdjacentHTML('beforeend', obj.makeBoxHtml());
+            cipherObjects.get(obj.id).changeType(obj.type, obj.options, false);
+        }
+        updateAllText();
+        console.log("load file finished");
+    };
 });

@@ -13,12 +13,12 @@ const CipherType = {
     vigenere: 11, 
     polybius: 12, 
     reverse: 13, 
-    join: 14,
-    substr: 15,
+    split: 14,
+    format: 15,
     scytale: 16,
-    railfance: 17, 
+    railfence: 17, 
     baseconv: 18,
-    calc: 19
+    calc: 19,
 };
 const cntCipherType = Object.keys(CipherType).length;
 
@@ -45,19 +45,6 @@ class CipherObject{
         this.message = '';
     }
 
-    updateFromJSON(json){
-        this.id = json.id;
-        this.fromIds.clear();
-        json.fromIds.forEach((e) => {this.fromIds.add(e)});
-        this.toIds.clear();
-        json.toIds.forEach((e) => {this.toIds.add(e)});
-        this.type = json.type;
-        this.options = json.options;
-        this.separator = json.separator;
-        this.text = json.text;
-        this.message = json.message;
-    }
-
     makeBoxHtml(){
         let position = fromId(this.id);
         let result = `<div id='box_${this.id}' class='box' style='left: ${position.x}px; top: ${position.y}px'>
@@ -78,10 +65,10 @@ class CipherObject{
                 <option value='${CipherType.vigenere}' class='type_strconv'>ビジュネル</option>
                 <option value='${CipherType.polybius}' class='type_strconv'>ポリュビオス</option>
                 <option value='${CipherType.reverse}' class='type_strswap'>逆順</option>
-                <option value='${CipherType.join}' class='type_strswap'>結合</option>
-                <option value='${CipherType.substr}' class='type_strswap'>部分文字列</option>
+                <option value='${CipherType.split}' class='type_strswap'>分割・結合</option>
+                <option value='${CipherType.format}' class='type_strswap'>フォーマット</option>
                 <option value='${CipherType.scytale}' class='type_strswap'>スキュタレー</option>
-                <option value='${CipherType.railfance}' class='type_strswap'>レールフェンス</option>
+                <option value='${CipherType.railfence}' class='type_strswap'>レールフェンス</option>
                 <option value='${CipherType.baseconv}' class='type_math'>進数変換</option>
                 <option value='${CipherType.calc}' class='type_math'>計算</option>
             </select>
@@ -93,7 +80,7 @@ class CipherObject{
         return result;
     }
 
-    changeType(type, option){
+    changeType(type, option, update=true){
         this.type = type;
         let html = '';
         let classList = document.getElementById(`box_${this.id}`).classList;
@@ -114,22 +101,25 @@ class CipherObject{
                 document.getElementById(`fromId_${this.id}`).style = 'display: none;'
                 break;
             case CipherType.charcode:
-                this.options = {"code": "SJIS", "mode": "decode"};
+                this.options = {"code": "SJIS", "mode": "decodeHex", "add" : false};
                 if(option != undefined) this.options = option;
-                html = `
-                    <select id='mode_${this.id}' class='boxSpElem' onchange='optionChanged("${this.id}", "mode")'>
+                html = `<select id='mode_${this.id}' class='boxSpElem' onchange='optionChanged("${this.id}", "mode")'>
                         <option ${this.options.mode=='decodeHex'?'selected':''} value='decodeHex'>16進数→文字</option>
                         <option ${this.options.mode=='decodeBin'?'selected':''} value='decodeBin'>2進数→文字</option>
                         <option ${this.options.mode=='encodeHex'?'selected':''} value='encodeHex'>文字→16進数</option>
                         <option ${this.options.mode=='encodeBin'?'selected':''} value='encodeBin'>文字→2進数</option>
-                    </select>
-                    <select id='code_${this.id}' class='boxSpElem' onchange='optionChanged("${this.id}", "code")'>
+                        </select>
+                        <select id='code_${this.id}' class='boxSpElem' onchange='optionChanged("${this.id}", "code")'>
                         <option ${this.options.code=='SJIS'?'selected':''} value='SJIS'>Shift_JIS</option>
                         <option ${this.options.code=='ASCII'?'selected':''} value='ASCII'>US-ASCII</option>
                         <option ${this.options.code=='EUCJP'?'selected':''} value='EUCJP'>EUC-JP</option>
                         <option ${this.options.code=='UTF8'?'selected':''} value='UTF8'>UTF-8</option>
                         <option ${this.options.code=='UTF16'?'selected':''} value='UTF16'>UTF-16</option>
-                    </select>`;
+                        </select>
+                        <div id='add_${this.id}' style='display:${this.options.mode=="decodeHex"?"block":"none"}'>
+                        <input type="checkbox" id="chk_${this.id}" onchange='optionChanged("${this.id}", "chk")' ${this.options.add?'checked':''}/>
+                        <label id='chklab_${this.id}'>82追加</label>
+                        </div>`;
                 classList.add('code');
                 break;
             case CipherType.charIndex:
@@ -209,27 +199,49 @@ class CipherObject{
                 classList.add('strconv');
                 break;
             case CipherType.polybius:
-                html = ``;
+                this.options = {'mode': 'decode'};
+                if(option != undefined) this.options = option;
+                html = `<div class='select_element element_${this.id}' data-value='decode' onClick='elementClicked("${this.id}")' style='display: block;'>デコード</div>
+                    <div class='select_element element_${this.id}' data-value='encode' onClick='elementClicked("${this.id}")' style='display: none;'>エンコード</div>`;
                 classList.add('strconv');
                 break;
             case CipherType.reverse:
                 html = ``;
                 classList.add('strswap');
                 break;
-            case CipherType.join:
-                html = ``;
+            case CipherType.split:
+                this.options = {'mode': 'splitInterval', 'val' : '4'};
+                if(option != undefined) this.options = option;
+                html = `<select id='mode_${this.id}' class='boxSpElem' onchange='optionChanged("${this.id}", "mode")'>
+                        <option ${this.options.mode=='num2char'?'selected':''} value='splitInterval'>文字数で分割</option>
+                        <option ${this.options.mode=='num2alpha'?'selected':''} value='splitChar'>指定文字で分割</option>
+                        <option ${this.options.mode=='num2alpha'?'selected':''} value='join'>結合</option>
+                        </select>
+                        <input id='val_${this.id}' class='boxSpInput' oninput='optionChanged("${this.id}", "val")' value='${this.options.val}'>`;
                 classList.add('strswap');
                 break;
-            case CipherType.substr:
-                html = ``;
+            case CipherType.format:
+                this.options = {'format': `{${this.fromIdMain}[0]}`};
+                if(option != undefined) this.options = option;
+                html = `<textarea id='format_${this.id}' class='boxInput' oninput='optionChanged("${this.id}", "format")'>${this.options.format}</textarea>`;
                 classList.add('strswap');
                 break;
             case CipherType.scytale:
                 html = ``;
+                this.options = {'mode' : 'decode', 'interval': '3'};
+                if(option != undefined) this.options = option;
+                html = `<div class='select_element element_${this.id}' data-value='decode' onClick='elementClicked("${this.id}")' style='display: block;'>デコード</div>
+                    <div class='select_element element_${this.id}' data-value='encode' onClick='elementClicked("${this.id}")' style='display: none;'>エンコード</div>
+                    rail=<input class='boxSpInputNum' type='number' id='interval_${this.id}' value='${this.options.interval}' oninput='optionChanged("${this.id}", "interval")'>`;
                 classList.add('strswap');
                 break;
-            case CipherType.railfance:
+            case CipherType.railfence:
                 html = ``;
+                this.options = {'mode' : 'decode', 'rail': '3'};
+                if(option != undefined) this.options = option;
+                html = `<div class='select_element element_${this.id}' data-value='decode' onClick='elementClicked("${this.id}")' style='display: block;'>デコード</div>
+                    <div class='select_element element_${this.id}' data-value='encode' onClick='elementClicked("${this.id}")' style='display: none;'>エンコード</div>
+                    rail=<input class='boxSpInputNum' type='number' id='rail_${this.id}' value='${this.options.rail}' oninput='optionChanged("${this.id}", "rail")'>`;
                 classList.add('strswap');
                 break;
             case CipherType.baseconv:
@@ -239,10 +251,10 @@ class CipherObject{
                 classList.add('math');
                 break;
             case CipherType.calc:
-                this.options = {'exp': ''};
+                this.options = {'exp': `${this.id}+1`};
                 if(option != undefined) this.options = option;
                 html = `<div id='val_${this.id}'></div>
-                    <input id='exp_${this.id}' oninput='optionChanged("${this.id}", "exp")'>`;
+                    <textarea id='exp_${this.id}' class='boxInput' oninput='optionChanged("${this.id}", "exp")'>{${this.fromIdMain}}+1</textarea>`;
                 classList.add('math');
                 break;
             default:
@@ -251,25 +263,44 @@ class CipherObject{
         }
 
         document.getElementById(`sp_${this.id}`).innerHTML = html;
-        updateAllText();
+        if(update){
+            updateAllText();
+        }
     }
 
     toJSON(){
         let json = {
             id: this.id,
             fromIds: Array.from(this.fromIds),
+            fromIdMain: this.fromIdMain,
             toIds: Array.from(this.toIds),
             posX: this.posX,
             posY: this.posY,
-            type: this.type,
+            type: Object.keys(CipherType)[this.type],
             options: this.options,
+            separator1: this.separator1,
+            separator2: this.separator2,
+            separator3: this.separator3,
             text: this.text,
         };
         return json;
     }
 
-    toURL(){
-
+    updateFromJSON(json){
+        this.id = json.id;
+        this.fromIdMain = json.fromIdMain;
+        this.fromIds.clear();
+        json.fromIds.forEach((e) => {this.fromIds.add(e)});
+        this.toIds.clear();
+        json.toIds.forEach((e) => {this.toIds.add(e)});
+        this.type = CipherType[json.type];
+        this.options = json.options;
+        this.separator1 = json.separator1;
+        this.separator2 = json.separator2;
+        this.separator3 = json.separator3;
+        this.text = json.text;
+        this.message = '';
+        //console.log(this);
     }
 
     delete(){
@@ -282,7 +313,6 @@ class CipherObject{
             if(cipherObjects.get(e).fromIdMain == this.id) cipherObjects.get(e).fromIdMain = "";
         });
     }
-
     
     changeId(newId){
         this.fromIds.forEach(e => {
@@ -302,12 +332,83 @@ class CipherObject{
         this.posX = fromId(newId).x;
         this.posY = fromId(newId).y;
     }
+
+    setLinkId(fromIds){
+        console.log(this.id, fromIds);
+        cipherObjects.get(this.id).fromIds = new Set(fromIds);
+        cipherObjects.forEach((val, key) => {
+            val.toIds.delete(this.id);
+        });
+        fromIds.forEach(e => {
+            cipherObjects.get(e).toIds.add(this.id);
+        });
+    }
 }
 
-function optionChanged(id, option){
-    console.log("option changed: ", id, option);
-    cipherObjects.get(id).options[option] = document.getElementById(`${option}_${id}`).value;
-    updateAllText();
+function optionChanged(id, option, update = true){
+    let obj = cipherObjects.get(id);
+    obj.options[option] = document.getElementById(`${option}_${id}`).value;
+
+    switch(obj.type){
+        case CipherType.charcode:
+            if(option == 'mode' || option == 'code'){
+                obj.options[option] = document.getElementById(`${option}_${id}`).value;
+                if(obj.options.mode == 'decodeHex' && obj.options.code != 'ASCII'){
+                    document.getElementById(`add_${id}`).style='display:block';
+                    document.getElementById(`chklab_${id}`).innerText = {'SJIS':'82', 'EUCJP':'a4', 'UTF8':'e38', 'UTF16':'30'}[obj.options.code] + '追加';
+                }else if(obj.options.mode == 'decodeBin' && obj.options.code == 'ASCII'){
+                    document.getElementById(`add_${id}`).style='display:block';
+                    document.getElementById(`chklab_${id}`).innerText = '0追加';
+                }else{
+                    document.getElementById(`add_${id}`).style='display:none';
+                }
+            }else if(option == "chk"){
+                obj.options.add = document.getElementById(`chk_${id}`).checked;
+            }
+            //console.log(obj)
+            break;
+        case CipherType.format:
+            s = obj.options.format;
+            startIdx = -1;
+            fromIds = [];
+            for(let i = 0; i < s.length; i++){
+                if(s[i] == ' '){
+                }else if(s[i] == '{'){
+                    startIdx = i + 1;
+                }else if(['}', ':', '['].indexOf(s[i]) != -1){
+                    let fromId = s.substring(startIdx, i);
+                    if(isId(fromId)){
+                        fromIds.push(fromId);
+                    }
+                    startIdx = -1;
+                }
+            }
+            obj.setLinkId(fromIds);
+            console.log(s, fromIds);
+        break;
+        case CipherType.calc:
+            s = obj.options.exp;
+            startIdx = -1;
+            fromIds = [];
+            for(let i = 0; i < s.length; i++){
+                if(s[i] == ' '){
+                }else if(s[i] == '{'){
+                    startIdx = i + 1;
+                }else if(s[i] == '}'){
+                    let fromId = s.substring(startIdx, i);
+                    if(isId(fromId)){
+                        fromIds.push(fromId);
+                    }
+                    startIdx = -1;
+                }
+            }
+            obj.setLinkId(fromIds);
+            break;
+    }
+
+    if(update){
+        updateAllText();
+    }
 }
 
 //cipherObjectは中身を使いまわし

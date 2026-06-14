@@ -225,6 +225,15 @@ select{
     background-color: #303030;
 }
 
+.boxInput{
+    width: 175px;
+    height: 50px;
+    overflow-wrap: break-word;
+    resize: none;
+    font-size: 14px;
+    background-color: #303030;
+}
+
 /* type変更による背景色変更 */
 
 .box.clicked{
@@ -256,7 +265,7 @@ select{
 }
 
 .math{
-    background-color: #1c2336;
+    background-color: #151a29;
 }
 
 .math.clicked{

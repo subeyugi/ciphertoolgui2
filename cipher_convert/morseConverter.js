@@ -101,9 +101,9 @@ function encodeMorseJP(s, isVec=false){
     let result = '';
     let message = '';
     if(isVec){
-        for(let i = 0; i < s.length; ++i){
-            for(let j = 0; j < s[i].length; ++j){
-                for(let k = 0; k < s[i][j].length; ++k){
+        for(let i = 0; i < s.length; i++){
+            for(let j = 0; j < s[i].length; j++){
+                for(let k = 0; k < s[i][j].length; k++){
                     let tmp = encodeMorseJP(s[i][j][k]);
                     s[i][j][k] = tmp.result;
                     if(message == '') message = tmp.message;
@@ -132,9 +132,9 @@ function decodeMorseJP(s, isVec=false){
     let s2 = '';
     let message = '';
     if(isVec){
-        for(let i = 0; i < s.length; ++i){
-            for(let j = 0; j < s[i].length; ++j){
-                for(let k = 0; k < s[i][j].length; ++k){
+        for(let i = 0; i < s.length; i++){
+            for(let j = 0; j < s[i].length; j++){
+                for(let k = 0; k < s[i][j].length; k++){
                     let tmp = decodeMorseJP(s[i][j][k]);
                     s[i][j][k] = tmp.result;
                     if(message == '') message = tmp.message;
@@ -143,7 +143,7 @@ function decodeMorseJP(s, isVec=false){
         }
         return new ConverterResult(s, message);
     }else{
-        for(let i = 0; i < s.length; ++i){
+        for(let i = 0; i < s.length; i++){
             if(s[i] == '.'){
                 s2 += '・';
             }else if(s[i] == '_' || s[i] == '-'){
@@ -174,9 +174,9 @@ function encodeMorseEN(s, isVec=false){
     let result = '';
     let message = '';
     if(isVec){
-        for(let i = 0; i < s.length; ++i){
-            for(let j = 0; j < s[i].length; ++j){
-                for(let k = 0; k < s[i][j].length; ++k){
+        for(let i = 0; i < s.length; i++){
+            for(let j = 0; j < s[i].length; j++){
+                for(let k = 0; k < s[i][j].length; k++){
                     let tmp = encodeMorseEN(s[i][j][k]);
                     s[i][j][k] = tmp.result;
                     if(message == '') message = tmp.message;
@@ -204,9 +204,9 @@ function decodeMorseEN(s, isVec=false){
     let s2 = '';
     let message = '';
     if(isVec){
-        for(let i = 0; i < s.length; ++i){
-            for(let j = 0; j < s[i].length; ++j){
-                for(let k = 0; k < s[i][j].length; ++k){
+        for(let i = 0; i < s.length; i++){
+            for(let j = 0; j < s[i].length; j++){
+                for(let k = 0; k < s[i][j].length; k++){
                     let tmp = decodeMorseEN(s[i][j][k]);
                     s[i][j][k] = tmp.result;
                     if(message == '') message = tmp.message;
@@ -215,7 +215,7 @@ function decodeMorseEN(s, isVec=false){
         }
         return new ConverterResult(s, message);
     }else{
-        for(let i = 0; i < s.length; ++i){
+        for(let i = 0; i < s.length; i++){
             if(s[i] == '.' || s[i] == '･'){
                 s2 += '・';
             }else if(s[i] == '_' || s[i] == '-'){

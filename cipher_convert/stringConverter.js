@@ -1,11 +1,11 @@
 function convertString(s, from, to, isVec = false){
-    console.log(s, from, to, isVec);
+    //console.log(s, from, to, isVec);
 
     let message = '';
     if(isVec){
-        for(let i = 0; i < s.length; ++i){
-            for(let j = 0; j < s[i].length; ++j){
-                for(let k = 0; k < s[i][j].length; ++k){
+        for(let i = 0; i < s.length; i++){
+            for(let j = 0; j < s[i].length; j++){
+                for(let k = 0; k < s[i][j].length; k++){
                     let tmp = convertString(s[i][j][k], from, to);
                     s[i][j][k] = tmp.result;
                     if(message == '') message = tmp.message;
@@ -14,8 +14,8 @@ function convertString(s, from, to, isVec = false){
         }
         return new ConverterResult(s, message);
     }else{
-        if(from.length == 0){
-            new ConverterResult(s, message);
+        if(from == '' && to == ''){
+            return new ConverterResult(s, '');
         }
         if(from.length != to.length){
             return new ConverterResult(getErrorStr(s), `変換前と変換後の数を同じにしてください`);

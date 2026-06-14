@@ -8,15 +8,16 @@
 
 function encodeStrHex(s, charcode, isVec=false){
     if(isVec){
-        for(let i = 0; i < s.length; ++i){
-            for(let j = 0; j < s[i].length; ++j){
-                for(let k = 0; k < s[i][j].length; ++k){
+        for(let i = 0; i < s.length; i++){
+            for(let j = 0; j < s[i].length; j++){
+                for(let k = 0; k < s[i][j].length; k++){
                     s[i][j][k] = encodeStrHex(s[i][j][k], charcode).result;
                 }   
             }
         }
         return new ConverterResult(s);
     }else{
+        if(s == '') return new ConverterResult('', '');
         const unicodeArray = Encoding.stringToCode(s);//javascriptのデフォルト
         const sjisArray = Encoding.convert(unicodeArray, {
             to: charcode,
@@ -34,13 +35,13 @@ function encodeStrHex(s, charcode, isVec=false){
 //16進数を指定文字コードで文字列に変換する
 //s: 文字列
 //charcode: 文字コード。SJIS, ASCII, EUCJP, UTF8, UTF16, UNICODEのいずれか
-function decodeStrHex(s, charcode, isVec=false){
+function decodeStrHex(s, charcode, add, isVec=false){
     if(isVec){
         message = '';
-        for(let i = 0; i < s.length; ++i){
-            for(let j = 0; j < s[i].length; ++j){
-                for(let k = 0; k < s[i][j].length; ++k){
-                    let tmp = decodeStrHex(s[i][j][k], charcode);
+        for(let i = 0; i < s.length; i++){
+            for(let j = 0; j < s[i].length; j++){
+                for(let k = 0; k < s[i][j].length; k++){
+                    let tmp = decodeStrHex(s[i][j][k], charcode, add);
                     s[i][j][k] = tmp.result;
                     if(message =='') message = tmp.message;
                 }   
@@ -48,10 +49,9 @@ function decodeStrHex(s, charcode, isVec=false){
         }
         return new ConverterResult(s, message);
     }else{
-        console.log(rletters);
-        for(let i = 0; i < s.length; ++i){
+        if(s == '') return new ConverterResult('', '');
+        for(let i = 0; i < s.length; i++){
             let tmp = rletters.get(s[i]);
-            console.log(s[i], tmp);
             if(tmp == undefined || (!(0 <= tmp && tmp < 16))){
                 return new ConverterResult(getErrorStr(s), `0~9,a~fで構成される文字列を入力してください`);
             }
@@ -66,16 +66,40 @@ function decodeStrHex(s, charcode, isVec=false){
                 s = s.substr(0, Math.floor(s.length / 2) * 2);
             }
         }else if(charcode == 'UTF8'){
-            if(s.length % 6 != 0){
-                if(message == '') message = '入力桁数は6の倍数である必要があります';
-                s_rem = s.substr(Math.floor(s.length / 6) * 6, s.length);
-                s = s.substr(0, Math.floor(s.length / 6) * 6);
+            if(add){
+                let s2 = "";
+                for(let i = 0; i < s.length; i += 3){
+                    if(i + 3 <= s.length){
+                        s2 += "e38" + s.substring(i, i + 3);
+                    }else{
+                        s_rem = s.substring(i);
+                    }
+                }
+                s = s2;
+            }else{
+                if(s.length % 6 != 0){
+                    if(message == '') message = '入力桁数は6の倍数である必要があります';
+                    s_rem = s.substr(Math.floor(s.length / 6) * 6, s.length);
+                    s = s.substr(0, Math.floor(s.length / 6) * 6);
+                }
             }
         }else{
-            if(s.length % 4 != 0){
-                if(message == '') message = '入力桁数は4の倍数である必要があります';
-                s_rem = s.substr(Math.floor(s.length / 4) * 4, s.length);
-                s = s.substr(0, Math.floor(s.length / 4) * 4);
+            if(add){
+                let s2 = "";
+                for(let i = 0; i < s.length; i += 2){
+                    if(i + 2 <= s.length){
+                        s2 += {'SJIS':'82', 'EUCJP':'a4', 'UTF16':'30'}[charcode] + s.substr(i, 2);
+                    }else{
+                        s_rem = s.substr(i, 2);
+                    }
+                }
+                s = s2;
+            }else{
+                if(s.length % 4 != 0){
+                    if(message == '') message = '入力桁数は4の倍数である必要があります';
+                    s_rem = s.substr(Math.floor(s.length / 4) * 4, s.length);
+                    s = s.substr(0, Math.floor(s.length / 4) * 4);
+                }            
             }
         }
         let array = [];
@@ -100,15 +124,16 @@ function decodeStrHex(s, charcode, isVec=false){
 //charcode: 文字コード。SJIS, ASCII, EUCJP, UTF8, UTF16, UNICODEのいずれか
 function encodeStrHex(s, charcode, isVec=false){
     if(isVec){
-        for(let i = 0; i < s.length; ++i){
-            for(let j = 0; j < s[i].length; ++j){
-                for(let k = 0; k < s[i][j].length; ++k){
+        for(let i = 0; i < s.length; i++){
+            for(let j = 0; j < s[i].length; j++){
+                for(let k = 0; k < s[i][j].length; k++){
                     s[i][j][k] = encodeStrHex(s[i][j][k], charcode).result;
                 }   
             }
         }
         return new ConverterResult(s);
     }else{
+        if(s == '') return new ConverterResult('', '');
         const unicodeArray = Encoding.stringToCode(s);//javascriptのデフォルト
         const sjisArray = Encoding.convert(unicodeArray, {
             to: charcode,
@@ -126,13 +151,13 @@ function encodeStrHex(s, charcode, isVec=false){
 //2進数を指定文字コードで文字列に変換する
 //s: 2進数文字列
 //charcode: 文字コード。SJIS, ASCII, EUCJP, UTF8, UTF16, UNICODEのいずれか
-function decodeStrBin(s, charcode, isVec=false){
+function decodeStrBin(s, charcode, add, isVec=false){
     if(isVec){
         message = '';
-        for(let i = 0; i < s.length; ++i){
-            for(let j = 0; j < s[i].length; ++j){
-                for(let k = 0; k < s[i][j].length; ++k){
-                    let tmp = decodeStrBin(s[i][j][k], charcode);
+        for(let i = 0; i < s.length; i++){
+            for(let j = 0; j < s[i].length; j++){
+                for(let k = 0; k < s[i][j].length; k++){
+                    let tmp = decodeStrBin(s[i][j][k], charcode, add);
                     s[i][j][k] = tmp.result;
                     if(message =='') message = tmp.message;
                 }   
@@ -140,11 +165,26 @@ function decodeStrBin(s, charcode, isVec=false){
         }
         return new ConverterResult(s, message);
     }else{
-        for(let i = 0; i < s.length; ++i){
+        if(s == '') return new ConverterResult('', '');
+        for(let i = 0; i < s.length; i++){
             if(!(s[i] == '0'|| s[i] == '1')){
                 return new ConverterResult(getErrorStr(s), `0,1で構成される文字列を入力してください`);
             }
         }
+        
+        if(charcode == 'ASCII' && add){
+            let s2 = '';
+            for(let i = 0; i < s.length; i += 7){
+                console.log(i)
+                if(i + 7 <= s.length){
+                    s2 += '0' + s.substring(i, i + 7);
+                }else{
+                    s2 += s.substring(i);
+                }
+            }
+            s = s2;
+        }
+        console.log(s);
         let message = '';
         let hex = convertBase(s, 2, 16);
         return decodeStrHex(hex.result, charcode);
@@ -157,9 +197,9 @@ function decodeStrBin(s, charcode, isVec=false){
 function encodeStrBin(s, charcode, isVec=false){
     if(isVec){
         message = '';
-        for(let i = 0; i < s.length; ++i){
-            for(let j = 0; j < s[i].length; ++j){
-                for(let k = 0; k < s[i][j].length; ++k){
+        for(let i = 0; i < s.length; i++){
+            for(let j = 0; j < s[i].length; j++){
+                for(let k = 0; k < s[i][j].length; k++){
                     let tmp = encodeStrBin(s[i][j][k], charcode);
                     s[i][j][k] = tmp.result;
                     if(message =='') message = tmp.message;
@@ -168,6 +208,7 @@ function encodeStrBin(s, charcode, isVec=false){
         }
         return new ConverterResult(s, message);
     }else{
+        if(s == '') return new ConverterResult('', '');
         let message = '';
         let hex = encodeStrHex(s, charcode);
         return convertBase(hex.result, 16, 2);

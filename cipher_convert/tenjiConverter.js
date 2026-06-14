@@ -10,9 +10,9 @@ function decodeTenjiJP(s, isVec=false){
     let result = '';
     let message = '';
     if(isVec){
-        for(let i = 0; i < s.length; ++i){
-            for(let j = 0; j < s[i].length; ++j){
-                for(let k = 0; k < s[i][j].length; ++k){
+        for(let i = 0; i < s.length; i++){
+            for(let j = 0; j < s[i].length; j++){
+                for(let k = 0; k < s[i][j].length; k++){
                     let tmp = decodeTenjiJP(s[i][j][k]);
                     s[i][j][k] = tmp.result;
                     if(message == '') message = tmp.message;
@@ -40,9 +40,9 @@ function encodeTenjiJP(s, isVec=false){
     let result = '';
     let message = '';
     if(isVec){
-        for(let i = 0; i < s.length; ++i){
-            for(let j = 0; j < s[i].length; ++j){
-                for(let k = 0; k < s[i][j].length; ++k){
+        for(let i = 0; i < s.length; i++){
+            for(let j = 0; j < s[i].length; j++){
+                for(let k = 0; k < s[i][j].length; k++){
                     let tmp = encodeTenjiJP(s[i][j][k]);
                     s[i][j][k] = tmp.result;
                     if(message == '') message = tmp.message;

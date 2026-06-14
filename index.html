@@ -7,16 +7,18 @@
 <html lang='japanese'>
     <body>
         <div class='top_io_bar' id="top_io_bar">
-            暗号化・復号化ツール2.0
+            暗号化・復号化ツール2(β)
             <button type="button" onclick='saveBtnClicked()'>保存</button>
-            <input type="file" name="" id="file_input" accept=".cip" />
-            注意：未実装、バグあり
+            <input type="file" name="" id="file_input" accept=".txt"/>
+            注意：PC限定、未実装、バグあり
             <a href="https://github.com/subeyugi/ciphertoolgui/blob/main/readme.md" target="_blank">使い方はこちら</a><br><br>
             <span class='top_half'>
                 <h8>入力文</h8>
                 <button id="copyButton" onclick='inputCopyBtnClicked()'>コピー</button>
                 <span class='top_id' id='top_input_id'>A1</span>
                 <span class='top_error' id='top_input_message'></span>
+                <h8>　文字数：</h8>
+                <h8 class='top_id' id='top_input_length'>0</h8>
                 <br>
                 <textarea id='input_text' class='top_text' spellcheck='false' resize='inTextareaResized()', changed="inputBoxChanged()"></textarea>
             </span>
@@ -24,7 +26,10 @@
                 <h8>出力文</h8>
                 <button id="copyButton" onclick='outputCopyBtnClicked()'>コピー</button>
                 <span class='top_id' id='top_output_id'></span>
-                <span class='top_error' id='top_output_message'></span><br>
+                <span class='top_error' id='top_output_message'></span>
+                <h8>　文字数：</h8>
+                <h8 class='top_id' id='top_output_length'>0</h8>
+                <br>
                 <textarea id='output_text' class='top_text' spellcheck='false' readonly='readonly'></textarea>
             </span>
         </div>
@@ -33,9 +38,12 @@
             <div id='cursor' class='cursorBox'>Move</div>
         </div>
 
+        <script src="src/variables.js"></script>
+        <script src="src/errorIndication.js"></script>
         <script src='src/class.js'></script>
         <script src="lib/encoding.min.js"></script>
-        <script src='cipher_convert/converter.js'></script>
+        <script src='src/converter.js'></script>
+        <script src='src/charCounter.js'></script>
         <script src="cipher_convert/morseConverter.js"></script>
         <script src="cipher_convert/stringConverter.js"></script>
         <script src="cipher_convert/twoTouchConverter.js"></script>
@@ -51,7 +59,10 @@
         <script src="cipher_convert/dakutenConverter.js"></script>
         <script src="cipher_convert/tenjiConverter.js"></script>
         <script src="cipher_convert/polybiusConverter.js"></script>
-        <script src="src/errorIndication.js"></script>
+        <script src="cipher_convert/formatConvert.js"></script>
+        <script src="cipher_convert/railFenceConvert.js"></script>
+        <script src="cipher_convert/scytaleConverter.js"></script>
+        <script src="cipher_convert/splitConverter.js"></script>
         <script src='src/init.js'></script>
         <script src="src/script.js"></script>
     </body>

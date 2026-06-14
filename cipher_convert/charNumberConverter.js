@@ -183,5 +183,3 @@ function iroha2num(vec, isVec){
         return new ConverterResult(result, message);
     }
 }
-
-console.log(alpha2num([[["abcde"]]], true));

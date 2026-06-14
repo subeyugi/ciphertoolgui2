@@ -1,16 +1,3 @@
-let gridStartTop = 40;
-let gridStartLeft = 50;
-let gridHeight = 140;
-let gridWidth = 200;
-let gridRowCount = 10;
-let gridColumnCount = Math.floor((window.innerWidth - gridStartLeft) / gridWidth);
-let inputId = "A1";
-let outputId = "A1";
-let nowSelectId = "A1";
-let ctrlPressed = false;
-
-let cipherObjects = new Map();
-
 function fromCR(col, row){
     if(col < 0) return undefined;
     if(row < 0) return undefined;
@@ -47,6 +34,12 @@ function fromXY(x, y){
         "y": row * gridHeight + gridStartTop,
         "id": String.fromCharCode(65 + col) + (row + 1), 
     };
+}
+
+function isId(id){
+    if(!('A'.charCodeAt(0) <= id.charCodeAt(0) && id.charCodeAt(0) <= 'Z'.charCodeAt(0))) return false;
+    if(isNaN(id.substring(1, id.length))) return false;
+    return cipherObjects.has(id);
 }
 
 //方眼の表示
