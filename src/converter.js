@@ -301,7 +301,7 @@ function updateText(to_id){
             break;
         case CipherType.format:
             //optionの方が分割ありになる
-            tmp = convertFormat(document.getElementById(`format_${to_id}`).value, getAllResult(toObj.fromIds), true);
+            tmp = convertFormat(document.getElementById(`format_${to_id}`).value, getResults(toObj.fromIds), true);
             toObj.text = joinText(tmp.result);
             toObj.message = tmp.message;
             break;
@@ -334,7 +334,7 @@ function updateText(to_id){
             }
             break;
         case CipherType.calc:
-            tmp = calculate(document.getElementById(`exp_${to_id}`).value, getAllResult(to_id), true);
+            tmp = calculate(document.getElementById(`exp_${to_id}`).value, getResults(toObj.fromIds), true);
             toObj.text = joinText(tmp.result);
             toObj.message = tmp.message;
             break;
@@ -356,8 +356,7 @@ function updateText(to_id){
     }
 }
 
-function getAllResult(fromIds){
-    console.log("fromIds", fromIds);
+function getResults(fromIds){
     let result = {};
     cipherObjects.forEach((val, id) => {
         if(fromIds.has(id)){

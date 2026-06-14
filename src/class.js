@@ -118,7 +118,7 @@ class CipherObject{
                         </select>
                         <div id='add_${this.id}' style='display:${this.options.mode=="decodeHex"?"block":"none"}'>
                         <input type="checkbox" id="chk_${this.id}" onchange='optionChanged("${this.id}", "chk")' ${this.options.add?'checked':''}/>
-                        <label id='chklab_${this.id}'>82追加</label>
+                        <label id='chklab_${this.id}'>${{'SJIS':'82', 'EUCJP':'a4', 'UTF16':'30'}[this.options.code]}追加</label>
                         </div>`;
                 classList.add('code');
                 break;
@@ -247,7 +247,7 @@ class CipherObject{
             case CipherType.baseconv:
                 this.options = {'from': '10', 'to': '16'};
                 if(option != undefined) this.options = option;
-                html = `<input id='from_${this.id}' class='num_input_from' type='number' value='10' oninput='optionChanged("${this.id}", "from")'>進数→<input id='to_${this.id}' class='num_input_to' type='number' value='16' oninput='optionChanged("${this.id}", "to")'>進数`;
+                html = `<input id='from_${this.id}' class='num_input_from' type='number' value='${this.options.from}' oninput='optionChanged("${this.id}", "from")'>進数→<input id='to_${this.id}' class='num_input_to' type='number' value='${this.options.to}' oninput='optionChanged("${this.id}", "to")'>進数`;
                 classList.add('math');
                 break;
             case CipherType.calc:
@@ -334,7 +334,6 @@ class CipherObject{
     }
 
     setLinkId(fromIds){
-        console.log(this.id, fromIds);
         cipherObjects.get(this.id).fromIds = new Set(fromIds);
         cipherObjects.forEach((val, key) => {
             val.toIds.delete(this.id);
