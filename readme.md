@@ -7,5 +7,6 @@
 工事中
 
 ### Thanks
+使用したライブラリ
 * 文字コード変換： encoding.js by polygonplanet<br>
 https://github.com/polygonplanet/encoding.js/blob/master/README_ja.md
