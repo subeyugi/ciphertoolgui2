@@ -46,3 +46,6 @@ https://youtu.be/uGmkUytD3mM
 使用したライブラリ
 * 文字コード変換： encoding.js by polygonplanet<br>
 https://github.com/polygonplanet/encoding.js/blob/master/README_ja.md
+
+* midiファイル操作：　Tonejs/Midi by tambien<br>
+https://github.com/Tonejs/Midi
