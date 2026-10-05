@@ -10,7 +10,7 @@ document.getElementById("main_area").addEventListener("mousedown", (e) =>{
 
     //入力、出力idを更新
     if(cipherObjects.has(position.id)){
-        if(cipherObjects.get(position.id).type == CipherType.input){
+        if(cipherObjects.get(position.id).type == CipherType.input || cipherObjects.get(position.id).type == CipherType.midi){
             inputId = position.id;
             document.getElementById("top_input_id").innerText = inputId;
             document.getElementById("input_text").value = cipherObjects.get(inputId).text;

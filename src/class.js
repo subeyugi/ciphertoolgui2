@@ -1,24 +1,25 @@
 const CipherType = {
     none: 0,
     input: 1,
-    charcode: 2,
-    morse: 3,
-    tenji: 4,
-    twotouch: 5,
-    charIndex: 6,
-    ceaser: 7,
-    mikaka: 8,
-    strconv: 9,
-    atbash: 10,
-    vigenere: 11, 
-    polybius: 12, 
-    reverse: 13, 
-    split: 14,
-    format: 15,
-    scytale: 16,
-    railfence: 17, 
-    baseconv: 18,
-    calc: 19,
+    midi: 2,
+    charcode: 3,
+    morse: 4,
+    tenji: 5,
+    twotouch: 6,
+    charIndex: 7,
+    ceaser: 8,
+    mikaka: 9,
+    strconv: 10,
+    atbash: 11,
+    vigenere: 12, 
+    polybius: 13, 
+    reverse: 14, 
+    split: 15,
+    format: 16,
+    scytale: 17,
+    railfence: 18, 
+    baseconv: 19,
+    calc: 20,
 };
 const cntCipherType = Object.keys(CipherType).length;
 
@@ -53,6 +54,7 @@ class CipherObject{
             <select id=sel_${this.id} onchange=typeChanged("${this.id}")>
                 <option value='${CipherType.none}' ></option>
                 <option value='${CipherType.input}'>入力</option>
+                <option value='${CipherType.midi}'>midi入力</option>
                 <option value='${CipherType.charcode}' class='type_code'>文字コード</option>
                 <option value='${CipherType.morse}' class='type_code'>モールス</option>
                 <option value='${CipherType.tenji}' class='type_code'>点字</option>
@@ -99,6 +101,18 @@ class CipherObject{
             case CipherType.input:
                 document.getElementById(`txt_${this.id}`).classList.add('text_box_large');
                 document.getElementById(`fromId_${this.id}`).style = 'display: none;'
+                break;
+            case CipherType.midi:
+                document.getElementById(`fromId_${this.id}`).style = 'display: none;'
+                html = `<div><input id="midiInput_${this.id}" type="file" accept=".mid, .midi" style="width:100%; height=30px" onchange='midiInput("${this.id}")'></div>
+                        <div><select id="midiInputType_${this.id}" class='boxSpElem' onchange='midiInput("${this.id}")'>
+                            <option value='noteNo'>ノートナンバー</option>
+                            <option value='startTime'>スタート時間</option>
+                            <option value='length'>長さ</option>
+                            <option value='morse'>モールス</option>
+                            <option value='binary'>有無2進数</option>
+                            <option value='base_n'>音高n進数</option>
+                        </select></div>`;
                 break;
             case CipherType.charcode:
                 this.options = {"code": "SJIS", "mode": "decodeHex", "add" : false};
@@ -153,7 +167,6 @@ class CipherObject{
                         <option ${this.options.mode=='tenji2jp'?'selected':''} value='tenji2jp'>点字→日本語</option>
                         <option ${this.options.mode=='jp2tenji'?'selected':''} value='jp2tenji'>日本語→点字</option>
                         </select>`;
-                classList.add('code');
                 classList.add('code');
                 break;
             case CipherType.twotouch:

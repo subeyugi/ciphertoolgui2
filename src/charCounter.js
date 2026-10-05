@@ -10,5 +10,8 @@ function getStrLength(s){
             }
         }
     }
+    if(result.length > 10){
+        result = result.substring(0, 10) + "...";
+    }
     return result;
 }

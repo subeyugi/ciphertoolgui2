@@ -34,6 +34,11 @@ select{
     left: 5px;
     background-color: #303030;
     color: #FFFFFF;
+    scrollbar-width: none;
+}
+
+select::-webkit-scrollbar {
+  display: none;
 }
 
 .box_sp{

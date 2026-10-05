@@ -81,7 +81,6 @@ function joinText(vec){
 }
 
 function updateText(to_id){
-    //console.log("updateText : ", to_id);
     let toObj = cipherObjects.get(to_id);
     let options = toObj.options;
     let fromText = '';
@@ -101,6 +100,8 @@ function updateText(to_id){
             toObj.text = fromText;
             break;
         case CipherType.input:
+            break;
+        case CipherType.midi:
             break;
         case CipherType.charcode:
             switch(options.mode){
