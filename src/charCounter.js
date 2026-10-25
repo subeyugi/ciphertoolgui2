@@ -14,7 +14,7 @@ function getStrLength(s){
             }
         }
     }
-    if(result.length > 7){
+    if(vec[0][0].length.toString() >= 5){
         result = vec[0][0].length.toString() + "[" + result + "]";
     }
     return result;

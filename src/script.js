@@ -277,7 +277,7 @@ function copyURLClicked(){
                 option = `${e.options.mode}`;
                 break;
             case CipherType.tenji:
-                option = `${e.options.mode}`;
+                option = `${e.options.mode}_${e.options.type}`;
                 break;
             case CipherType.twotouch:
                 option = `${e.options.mode}`;

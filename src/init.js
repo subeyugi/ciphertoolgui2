@@ -110,7 +110,7 @@ if(urlQueryParams != ""){
                 json["options"] = {"mode": option[0]};
                 break;
             case "tenji":
-                json["options"] = {"mode": option[0]};
+                json["options"] = {"mode": option[0], "type":option[1]};
                 break;
             case "twotouch":
                 json["options"] = {"mode": option[0]};

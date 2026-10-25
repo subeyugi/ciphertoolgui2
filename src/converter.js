@@ -152,12 +152,20 @@ function updateText(to_id){
         case CipherType.tenji:
             switch(options.mode){
                 case 'tenji2jp':
-                    tmp = decodeTenjiJP(fromTextSplit, true);
+                    if(options.type == "tenji"){
+                        tmp = decodeTenjiJP(fromTextSplit, true);
+                    }else{
+                        tmp = decodeTenjiBinJP(fromTextSplit, options.type, true);
+                    }
                     toObj.text = joinText(tmp.result);
                     toObj.message = tmp.message;
                     break;
                 case 'jp2tenji':
-                    tmp = encodeTenjiJP(fromTextSplit, true);
+                    if(options.type == "tenji"){
+                        tmp = encodeTenjiJP(fromTextSplit, true);
+                    }else{
+                        tmp = encodeTenjiBinJP(fromTextSplit, options.type, true);
+                    }
                     toObj.text = joinText(tmp.result);
                     toObj.message = tmp.message;
                     break;

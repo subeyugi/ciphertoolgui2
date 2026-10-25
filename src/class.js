@@ -161,11 +161,17 @@ class CipherObject{
                 classList.add('code');
                 break;
             case CipherType.tenji:
-                this.options = {"mode": "tenji2jp"};
+                this.options = {"mode": "tenji2jp", "type":"tenji"};
                 if(option != undefined) this.options = option;
                 html = `<select id='mode_${this.id}' class='boxSpElem' onchange='optionChanged("${this.id}", "mode")'>
                         <option ${this.options.mode=='tenji2jp'?'selected':''} value='tenji2jp'>点字→日本語</option>
                         <option ${this.options.mode=='jp2tenji'?'selected':''} value='jp2tenji'>日本語→点字</option>
+                        </select>
+                        <select id='type_${this.id}' class='boxSpElem' onchange='optionChanged("${this.id}", "type")'>
+                        <option ${this.options.type=='tenji'?'selected':''} value='tenji'>点字</option>
+                        <option ${this.options.type=='bin123456'?'selected':''} value='bin123456'>2進123456</option>
+                        <option ${this.options.type=='bin321654'?'selected':''} value='bin321654'>2進321654</option>
+                        <option ${this.options.type=='bin142536'?'selected':''} value='bin142536'>2進142536</option>
                         </select>`;
                 classList.add('code');
                 break;
@@ -360,7 +366,6 @@ class CipherObject{
 function optionChanged(id, option, update = true){
     let obj = cipherObjects.get(id);
     obj.options[option] = document.getElementById(`${option}_${id}`).value;
-
     switch(obj.type){
         case CipherType.charcode:
             if(option == 'mode' || option == 'code'){
