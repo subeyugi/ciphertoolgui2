@@ -107,14 +107,27 @@ function decodeStrHex(s, charcode, add, isVec=false){
             array.push(parseInt(s.substr(i, 2), 16));
         }
 
-        const unicodeArray = Encoding.convert(array, {
-            to: 'UNICODE',
-            from: charcode
-        });
-        if(s_rem == ''){
-            return new ConverterResult(Encoding.codeToString(unicodeArray), message);
+        if(charcode == "UTF16"){
+            //「一(4e00)」など00終わりの場合「N(4e)」に変換される問題があったため、UTF16の場合のみlittle endianで変換
+            const unicodeArray = Encoding.convert(array.toReversed(), {
+                to: 'UNICODE',
+                from: "UTF16LE"
+            });
+            if(s_rem == ''){
+                return new ConverterResult(Encoding.codeToString(unicodeArray), message);
+            }else{
+                return new ConverterResult(Encoding.codeToString(unicodeArray) + getErrorStr(s_rem), message);
+            }
         }else{
-            return new ConverterResult(Encoding.codeToString(unicodeArray) + getErrorStr(s_rem), message);
+            const unicodeArray = Encoding.convert(array, {
+                to: 'UNICODE',
+                from: charcode
+            });
+            if(s_rem == ''){
+                return new ConverterResult(Encoding.codeToString(unicodeArray), message);
+            }else{
+                return new ConverterResult(Encoding.codeToString(unicodeArray) + getErrorStr(s_rem), message);
+            }
         }
     }
 }
@@ -175,7 +188,6 @@ function decodeStrBin(s, charcode, add, isVec=false){
         if(charcode == 'ASCII' && add){
             let s2 = '';
             for(let i = 0; i < s.length; i += 7){
-                console.log(i)
                 if(i + 7 <= s.length){
                     s2 += '0' + s.substring(i, i + 7);
                 }else{
@@ -184,7 +196,6 @@ function decodeStrBin(s, charcode, add, isVec=false){
             }
             s = s2;
         }
-        console.log(s);
         let message = '';
         let hex = convertBase(s, 2, 16);
         return decodeStrHex(hex.result, charcode);

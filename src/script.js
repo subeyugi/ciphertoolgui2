@@ -48,8 +48,19 @@ document.getElementById("main_area").addEventListener("mousemove", (e) => {
     if(selectFromId != undefined){
         let rect = e.currentTarget.getBoundingClientRect();
         let position = fromXY(e.clientX - rect.left, e.clientY - rect.top);
-        document.getElementById('cursor').style = `left:${position.x}px; top:${position.y}px; display: block;`;
-        document.getElementById('cursor').innerText = `${ctrlPressed?"Move":"New"}`;
+        if(position.id != selectFromId){
+            if(cipherObjects.get(position.id) == undefined){
+                document.getElementById('cursor').style = `left:${position.x}px; top:${position.y}px; display: block;`;
+                document.getElementById('cursor').innerText = `${ctrlPressed?"Move":"New"}`;
+            }else if(ctrlPressed){
+                document.getElementById('cursor').style = `left:${position.x}px; top:${position.y}px; display: block;`;
+                document.getElementById('cursor').innerText = "Link";
+            }else{
+                document.getElementById('cursor').style = "display: none;";
+            }
+        }else{
+            document.getElementById('cursor').style = "display: none;";
+        }
     }
 });
 
@@ -61,19 +72,21 @@ document.getElementById("main_area").addEventListener("mouseup", (e) => {
     if(selectFromId != selectToId && selectFromId != undefined){
         if(!cipherObjects.has(selectToId)){
             if(ctrlPressed){
-                //box移動
-                if(cipherObjects.get(selectFromId).type == CipherType.input){
-                    inputId = position.id;
-                    document.getElementById("top_input_id").innerText = inputId;
-                    nowSelectId = position.id;
-                }else{
-                    outputId = position.id;
-                    document.getElementById("top_output_id").innerText = outputId;
+                if(cipherObjects.get(selectToId) == undefined){
+                    //box移動
+                    if(cipherObjects.get(selectFromId).type == CipherType.input){
+                        inputId = position.id;
+                        document.getElementById("top_input_id").innerText = inputId;
+                        nowSelectId = position.id;
+                    }else{
+                        outputId = position.id;
+                        document.getElementById("top_output_id").innerText = outputId;
+                        nowSelectId = position.id;
+                    }
+                    changeId(selectFromId, position.id);
+                    document.getElementById(`box_${position.id}`).classList.add('clicked');
                     nowSelectId = position.id;
                 }
-                changeId(selectFromId, position.id);
-                document.getElementById(`box_${position.id}`).classList.add('clicked');
-                nowSelectId = position.id;
             }else{
                 //新規box追加
                 let tmp = new CipherObject(selectToId, selectFromId);
@@ -93,6 +106,16 @@ document.getElementById("main_area").addEventListener("mouseup", (e) => {
                 nowSelectId = outputId;
                 updateAllText();
             }
+        }else if(ctrlPressed){
+            //link変更
+            cipherObjects.get(selectToId).fromIds.forEach(id => {
+                cipherObjects.get(id).toIds.delete(selectToId);
+            });
+            cipherObjects.get(selectToId).fromIdMain = selectFromId;
+            cipherObjects.get(selectToId).fromIds = new Set([selectFromId]);
+            cipherObjects.get(selectFromId).toIds.add(selectToId);
+            document.getElementById(`fromId_${selectToId}`).innerText = "⇐ " + selectFromId;
+            updateAllText();
         }
     }
     selectToId = undefined;
@@ -125,7 +148,6 @@ function saveBtnClicked(){
     let text = '';
     let result = [];
     cipherObjects.forEach((val, key)=>{
-        console.log(val);
         result.push(val);
     });
 
@@ -135,7 +157,7 @@ function saveBtnClicked(){
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `ciphertool-${date.getFullYear()}${String(date.getMonth()+1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}.txt`;
+    a.download = `ciphertool_${date.getFullYear()}${String(date.getMonth()+1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}_${document.getElementById("output_text").value}.txt`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -193,7 +215,9 @@ document.addEventListener('keydown', (event) => {
     }else if(event.ctrlKey){
         ctrlPressed = true;
         if(selectFromId != undefined){
-            document.getElementById('cursor').innerText = 'Move';
+            if(document.getElementById('cursor').innerText == "New"){
+                document.getElementById('cursor').innerText = 'Move';
+            }
         }
     }
 });
@@ -219,6 +243,7 @@ document.getElementById('file_input').addEventListener('change', (e) => {
 
         for(let i = 0; i < result.length; i++){
             let obj = new CipherObject();
+            //console.log(result[i]);
             obj.updateFromJSON(result[i]);
             cipherObjects.set(obj.id, obj);
             document.getElementById('main_area').insertAdjacentHTML('beforeend', obj.makeBoxHtml());
@@ -228,3 +253,77 @@ document.getElementById('file_input').addEventListener('change', (e) => {
         console.log("load file finished");
     };
 });
+
+//URL変換ボタンクリック
+function copyURLClicked(){
+    let urlParam = "https://ciphertoolgui2.pentate.workers.dev?";
+    cipherObjects.forEach(e => {
+        option = ""
+        switch(e.type){
+            case CipherType.none:
+                break;
+            case CipherType.input:
+                option = encodeURI(e.text);
+                break;
+            case CipherType.midi:
+                break;
+            case CipherType.charcode:
+                option = `${e.options.mode}_${e.options.code}_${e.options.add?"T":"F"}`;
+                break;
+            case CipherType.charIndex:
+                option = `${e.options.mode}`;
+                break;
+            case CipherType.morse:
+                option = `${e.options.mode}`;
+                break;
+            case CipherType.tenji:
+                option = `${e.options.mode}`;
+                break;
+            case CipherType.twotouch:
+                option = `${e.options.mode}`;
+                break;
+            case CipherType.ceaser:
+                option = `${e.options.rot}`;
+                break;
+            case CipherType.mikaka:
+                option = `${e.options.mode}`;
+                break;
+            case CipherType.strconv:
+                option = `${encodeURI(e.options.from)}_${encodeURI(e.options.to)}`;
+                break;
+            case CipherType.atbash:
+                break;
+            case CipherType.vigenere:
+                option = `${e.options.mode}_${encodeURI(e.options.key)}`;
+                break;
+            case CipherType.polybius:
+                option = `${e.options.mode}`;
+                break;
+            case CipherType.reverse:
+                break;
+            case CipherType.split:
+                option = `${encodeURI(e.options.mode)}_${encodeURI(e.options.val)}`;
+                break;
+            case CipherType.format:
+                option = `${encodeURI(e.options.format)}`;
+                break;
+            case CipherType.scytale:
+                option = `${e.options.mode}_${e.options.interval}`;
+                break;
+            case CipherType.railfence:
+                option = `${e.options.mode}_${e.options.rail}`;
+                break;
+            case CipherType.baseconv:
+                option = `${e.options.from}_${e.options.to}`;
+                break;
+            case CipherType.calc:
+                option = `${encodeURI(e.options.exp)}`;
+                break;
+        }
+        urlParam += `(${e.id}.${e.fromIdMain}.${Object.keys(CipherType)[e.type]}.${option})`
+    });
+    console.log(urlParam);
+    navigator.clipboard.writeText(urlParam).then(() => {
+        console.log("copy finished", urlParam);
+    });
+}

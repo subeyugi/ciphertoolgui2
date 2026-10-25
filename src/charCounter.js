@@ -1,4 +1,5 @@
 function getStrLength(s){
+    let maxLength = 20;
     let vec = splitText(s);
     let result = "";
     for(let i = 0; i < vec.length; i++){
@@ -6,12 +7,15 @@ function getStrLength(s){
             for(let k = 0; k < vec[i][j].length; k++){
                 if(result != '') result += ',';
                 result += vec[i][j][k].length.toString();
-                //console.log(vec[i][j][k].length)
+                if(maxLength <= result.length){
+                    result += "...";
+                    break;
+                }
             }
         }
     }
-    if(result.length > 10){
-        result = result.substring(0, 10) + "...";
+    if(result.length > 7){
+        result = vec[0][0].length.toString() + "[" + result + "]";
     }
     return result;
 }

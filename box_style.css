@@ -112,8 +112,9 @@ select::-webkit-scrollbar {
     margin: 5px;
     padding: 5px;
     user-select: none;
-    background-color: #161616;
+    background-color: #303030a0;
     text-align: center;
+    z-index: 100;
 }
 
 /*optionごと*/

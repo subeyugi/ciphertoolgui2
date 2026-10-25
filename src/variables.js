@@ -19,3 +19,4 @@ let selectFromId = undefined;
 let sep1 = ',', sep2 = ' ', sep3 = '\n';
 
 let midiFileName = "";
+let urlQueryParams = "";

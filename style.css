@@ -25,6 +25,10 @@ body{
     width: 100%;
 }
 
+h10{
+    font-size: 12px;
+}
+
 .gridline_horizontal{
     margin: 0px;
     padding: 0px;
@@ -67,8 +71,6 @@ body{
     height: 2000px;
 }
 
-
-
 .text_box{
     background-color: #101010;
     color: white;
@@ -93,9 +95,19 @@ input{
     user-select: none;
 }
 
+input[type='file']{
+    width: 250px;
+}
+
 /* input[type='text']{
     width: 100%;
 } */
+
+.topTitle{
+    height: 40px;
+    width: 100%;
+    white-space: nowrap;
+}
 
 .top_half{
     width: 50%;

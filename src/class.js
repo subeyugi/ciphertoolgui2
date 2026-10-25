@@ -64,7 +64,7 @@ class CipherObject{
                 <option value='${CipherType.mikaka}' class='type_strconv'>みかか</option>
                 <option value='${CipherType.strconv}' class='type_strconv'>文字置換</option>
                 <option value='${CipherType.atbash}' class='type_strconv'>アトバシュ</option>
-                <option value='${CipherType.vigenere}' class='type_strconv'>ビジュネル</option>
+                <option value='${CipherType.vigenere}' class='type_strconv'>ヴィジュネル</option>
                 <option value='${CipherType.polybius}' class='type_strconv'>ポリュビオス</option>
                 <option value='${CipherType.reverse}' class='type_strswap'>逆順</option>
                 <option value='${CipherType.split}' class='type_strswap'>分割・結合</option>
@@ -196,7 +196,7 @@ class CipherObject{
                 if(option != undefined) this.options = option;
                 html = `<input type='text' class='boxSpInput2' id='from_${this.id}' placeholder='a,b,c' oninput='optionChanged("${this.id}", "from")' value='${this.options.from}'>\
                     <div class='boxSpArrow'>→</div>
-                    <input type='text' class='boxSpInput2' id='to_${this.id}' placeholder='0,1,2' oninput='optionChanged("${this.id}", "to")' value='${this.options.from}'>`;
+                    <input type='text' class='boxSpInput2' id='to_${this.id}' placeholder='0,1,2' oninput='optionChanged("${this.id}", "to")' value='${this.options.to}'>`;
                 classList.add('strconv');
             case CipherType.atbash:
                 classList.add('strconv');
@@ -208,7 +208,7 @@ class CipherObject{
                 if(option != undefined) this.options = option;
                 html = `<div class='select_element element_${this.id}' data-value='decode' onClick='elementClicked("${this.id}")' style='display: block;'>デコード</div>
                     <div class='select_element element_${this.id}' data-value='encode' onClick='elementClicked("${this.id}")' style='display: none;'>エンコード</div>
-                    <input id='key_${this.id}' class='boxSpInput' oninput='optionChanged("${this.id}", "key")' value='key'>`;
+                    <input id='key_${this.id}' class='boxSpInput' oninput='optionChanged("${this.id}", "key")' placeholder='key' value='key'>`;
                 classList.add('strconv');
                 break;
             case CipherType.polybius:
@@ -236,7 +236,7 @@ class CipherObject{
             case CipherType.format:
                 this.options = {'format': `{${this.fromIdMain}[0]}`};
                 if(option != undefined) this.options = option;
-                html = `<textarea id='format_${this.id}' class='boxInput' oninput='optionChanged("${this.id}", "format")'>${this.options.format}</textarea>`;
+                html = `<textarea id='format_${this.id}' class='boxInput' oninput='optionChanged("${this.id}", "format")' placeholder='{A1[0]}'>${this.options.format}</textarea>`;
                 classList.add('strswap');
                 break;
             case CipherType.scytale:
@@ -335,7 +335,7 @@ class CipherObject{
         
         this.toIds.forEach(e => {
             cipherObjects.get(e).fromIds.delete(this.id);
-            cipherObjects.get(e).fromIds.add(this.id);
+            cipherObjects.get(e).fromIds.add(newId);
             if(cipherObjects.get(e).fromIdMain == this.id){
                 cipherObjects.get(e).fromIdMain = newId;
             } 

@@ -13,8 +13,6 @@ function updateAllText(){
             remFromId.get(id).add(e);
         })
     });
-    //console.log(remFromId)
-
     remFromId.forEach((val, id)=>{
         if(val.size == 0){
             que.push(id);
@@ -344,7 +342,6 @@ function updateText(to_id){
             break;
     }
 
-    //console.log("outputtext: ", outputId, toObj.text);
     document.getElementById('txt_' + to_id).innerText = toObj.text;
     document.getElementById('output_text').innerText = toObj.text;
     document.getElementById("top_output_length").innerText = getStrLength(toObj.text);

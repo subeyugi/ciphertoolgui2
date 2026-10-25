@@ -7,18 +7,21 @@
 <html lang='japanese'>
     <body>
         <div class='top_io_bar' id="top_io_bar">
-            暗号化・復号化ツール2(β)
-            <button type="button" onclick='saveBtnClicked()'>保存</button>
-            <input type="file" name="" id="file_input" accept=".txt"/>
-            注意：PC限定、未実装、バグあり
-            <a href="https://github.com/subeyugi/ciphertoolgui2/blob/main/readme.md" target="_blank">使い方はこちら</a><br><br>
+            <div class="topTitle">
+                暗号化・復号化ツール2(β)
+                <button type="button" onclick='saveBtnClicked()'>保存</button>
+                <input type="file" name="" id="file_input" accept=".txt"/>
+                <button type="button" onclick='copyURLClicked()'>URL</button>
+            　　　注意：PC限定、未実装、バグあり
+                <a href="https://github.com/subeyugi/ciphertoolgui2/blob/main/readme.md" target="_blank">使い方はこちら</a><br><br>
+            </div>
             <span class='top_half'>
                 <h8>入力文</h8>
                 <button id="copyButton" onclick='inputCopyBtnClicked()'>コピー</button>
                 <span class='top_id' id='top_input_id'>A1</span>
                 <span class='top_error' id='top_input_message'></span>
-                <h8>　文字数：</h8>
-                <h8 class='top_id' id='top_input_length'>0</h8>
+                <h10>　文字数：</h10>
+                <h10 class='top_id' id='top_input_length'>0</h10>
                 <br>
                 <textarea id='input_text' class='top_text' spellcheck='false' resize='inTextareaResized()', changed="inputBoxChanged()"></textarea>
             </span>
@@ -27,8 +30,8 @@
                 <button id="copyButton" onclick='outputCopyBtnClicked()'>コピー</button>
                 <span class='top_id' id='top_output_id'></span>
                 <span class='top_error' id='top_output_message'></span>
-                <h8>　文字数：</h8>
-                <h8 class='top_id' id='top_output_length'>0</h8>
+                <h10>　文字数：</h10>
+                <h10 class='top_id' id='top_output_length'>0</h10>
                 <br>
                 <textarea id='output_text' class='top_text' spellcheck='false' readonly='readonly'></textarea>
             </span>
@@ -67,5 +70,10 @@
         <script src="cipher_convert/splitConverter.js"></script>
         <script src='src/init.js'></script>
         <script src="src/script.js"></script>
+
+        <script>
+            //console.log(decodeStrHex("3042304430463048304a", "UTF16"));
+            //console.log(decodeStrHex("4f001111", "UTF16"));
+        </script>
     </body>
 </html>
