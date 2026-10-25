@@ -55,6 +55,7 @@ let to_bin123456Mp = new Map();
 for(let i = 0; i < (tenji).length; i++){
     aiu2tenjiMp.set(tenji[i][0], tenji[i][1]);
     tenji2aiuMp.set(tenji[i][1], tenji[i][0]);
+    from_bin123456Mp.set(tenji[i][2], tenji[i][0]);
     to_bin123456Mp.set(tenji[i][0], tenji[i][2]);
 }
 
@@ -144,6 +145,7 @@ function decodeTenjiBinJP(vec, type="bin123456", isVec=false){
                 s = s[0] + s[3] + s[1] + s[4] + s[2] + s[5];
             }
             tmp = from_bin123456Mp.get(s);
+            console.log("tmp=", tmp);
             if(tmp != undefined){
                 result += tmp;
             }else{
