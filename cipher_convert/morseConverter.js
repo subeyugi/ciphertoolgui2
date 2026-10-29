@@ -113,6 +113,7 @@ function encodeMorseJP(s, isVec=false){
         return new ConverterResult(s, message);
     }else{
         s = splitDakuten(s, false);
+        s = enlargeLetter(s);
         for(let i = 0; i < s.length; i++){
             if(i != 0) result += '　';
             let c = hiragana2morseMap.get(s[i]);

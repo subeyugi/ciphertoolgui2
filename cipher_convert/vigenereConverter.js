@@ -51,3 +51,5 @@ function decodeVigenere(s, key, isVec = false){
         return new ConverterResult(result, message);
     }
 }
+
+console.log(encodeVigenere("code", "arm"));

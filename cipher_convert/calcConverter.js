@@ -11,12 +11,12 @@
 */
 
 // 優先順位
-// 1: (), floor(), ceil()
+// 1: (), floor(), ceil(), sin(), cos()
 // 2: ^
 // 3: *, /, %
 // 4: *,/,%のみ（+-を含まない）
 // 5: +, -
-// 6: 数字のみ
+// 6: 数字のみ, PI
 
 function getCalcLevel(s){
     let result = 6;
@@ -40,7 +40,7 @@ function getCalcLevel(s){
 
 function calculate_sub(vec){//数値で返す
     let level = getCalcLevel(vec);
-    //console.log("start", vec);
+    //console.log("calculate_sub", vec, level);
 
     for(let i = 0; i < vec.length - 1; i++){
         if(!isNaN(vec[i]) && !isNaN(vec[i + 1])) return new ConverterResult('', '数式に誤りがあります(数字連続)');
@@ -50,9 +50,9 @@ function calculate_sub(vec){//数値で返す
     let result = [];
     let cntOpen = 0;
     let left = -1;
-    if(level == 1){ // ()=
+    if(level == 1){ // (), floor(), sin(), cos()
         for(let i = 0; i < vec.length; i++){
-            if(vec[i] == '('){
+            if(vec[i] == '(' || vec[i] == 'floor(' || vec[i] == 'ceil(' || vec[i] == 'sin(' || vec[i] == 'cos('){
                 if(cntOpen == 0) left = i + 1;
                 cntOpen++;
             }else if(vec[i] == ')'){
@@ -61,7 +61,18 @@ function calculate_sub(vec){//数値で返す
                 if(cntOpen == 0){
                     let tmp = calculate_sub(vec.slice(left, i));
                     if(tmp.message != '') return tmp;
-                    result.push(tmp.result);
+                    
+                    if(vec[left - 1] == '('){
+                        result.push(tmp.result);
+                    }else if(vec[left - 1] == 'floor('){
+                        result.push(Math.floor(tmp.result));
+                    }else if(vec[left - 1] == 'ceil('){
+                        result.push(Math.ceil(tmp.result));
+                    }else if(vec[left - 1] == 'sin('){
+                        result.push(Math.sin(tmp.result));
+                    }else if(vec[left - 1] == 'cos('){
+                        result.push(Math.cos(tmp.result));
+                    }
                 }
             }else if(cntOpen == 0){
                 result.push(vec[i]);
@@ -185,12 +196,27 @@ function calculate(s, variable, isVec = false){
     }else{
         let result = [];
         let now = '';   //数字をためておく
-        let startIdx = -1;
+        let startIdx = -1;//{の開始位置
         for(let i = 0; i < s.length; i++){
             if(s[i] == ' '){
 
             }else if(startIdx == -1 && (s[i] >= '0' && s[i] <= '9' || s[i] == '.')){
                 now += s[i];
+            }else if(startIdx == -1 && s.substring(i, Math.min(i + 2, s.length)) == "PI"){
+                result.push(3.141592653589793238462643);
+                i += 1;
+            }else if(startIdx == -1 && s.substring(i, Math.min(i + 6, s.length)) == "floor("){
+                result.push("floor(");
+                i += 5;
+            }else if(startIdx == -1 && s.substring(i, Math.min(i + 5, s.length)) == "ceil("){
+                result.push("ceil(");
+                i += 4;
+            }else if(startIdx == -1 && s.substring(i, Math.min(i + 4, s.length)) == "sin("){
+                result.push("sin(");
+                i += 3;
+            }else if(startIdx == -1 && s.substring(i, Math.min(i + 4, s.length)) == "cos("){
+                result.push("cos(");
+                i += 3;
             }else if(s[i] == '{'){
                 if(startIdx == -1){
                     startIdx = i + 1;

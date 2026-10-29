@@ -42,6 +42,15 @@ function isId(id){
     return cipherObjects.has(id);
 }
 
+function getTextType(s){
+    if(s == "") return "unknown";
+    if(/^[a-zA-Z]$/g.test(s[0])) return "alphabet";
+    if(/^\d$/g.test(s[0])) return "number";
+    if(0x2800 <= s.charCodeAt(0) && s.charCodeAt(0) <= 0x28ff) return "tenji";
+    if(/^[・－　]$/g.test(s[0])) return "morse";
+    return "other";
+}
+
 //url取得
 urlQueryParams = new URL(window.location.href).search.substring(1);
 console.log("urlParam=", urlQueryParams);

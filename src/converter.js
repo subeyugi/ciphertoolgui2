@@ -37,6 +37,7 @@ function updateAllText(){
     sortedIds.forEach(function(id){
         updateText(id);
     });
+    //exportUpdate();
 
     if(outputId){
         document.getElementById('output_text').value = cipherObjects.get(outputId).text;
@@ -252,12 +253,12 @@ function updateText(to_id){
         case CipherType.vigenere:
             switch(options.mode){
                 case 'decode':
-                    tmp = decodeVigenere(fromTextSplit, true);
+                    tmp = decodeVigenere(fromTextSplit, options.key, true);
                     toObj.text = joinText(tmp.result);
                     toObj.message = tmp.message;
                     break;
                 case 'encode':
-                    tmp = encodeVigenere(fromTextSplit, true);
+                    tmp = encodeVigenere(fromTextSplit, options.key, true);
                     toObj.text = joinText(tmp.result);
                     toObj.message = tmp.message;
                     break;

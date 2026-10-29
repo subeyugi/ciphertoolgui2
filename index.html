@@ -40,6 +40,55 @@
         <div class="main_area" id="main_area">
             <div id='cursor' class='cursorBox'>Move</div>
         </div>
+        <div class="bottomOutputArea" style="display:none">
+            <div class="bottomArea">
+                <h3>midi　　　　　<button type="button" class="buttom_button">midi出力</button></h3>
+                <div>
+                    出力タイプ　　：
+                    <select id='bottomMidiType' class="bottomMidiTypeSelect", oninput="exportUpdate()">
+                        <option value='morse'>モールス</option>
+                        <option value='bin'>有無2進数</option>
+                        <option value='base4'>左右有無4進数</option>
+                        <option value='baseN'>音高n進数</option>
+                        <option value='tenji'>点字</option>
+                    </select>
+                </div>
+                <div>
+                    モールス　　　：<input type="text" id="bottomMorse" class="boxSpInput" value="{A1}" oninput ="exportUpdate()"></input></br>
+                    テンポ　　　　：<input type="text" id="bottomBpm" class="boxSpInput" value="132" oninput ="exportUpdate()"></input></br>
+                    ・長さ　　　　：<input type="text" id="bottomShortLength" class="boxSpInput" value="1/32" oninput="exportUpdate()"></input></br>
+                    －長さ　　　　：<input type="text" id="bottomLongLength" class="boxSpInput" value="3/32" oninput="exportUpdate()"></input></br>
+                    短区切り長さ　：<input type="text" id="bottomSPauseLength" class="boxSpInput" value="1/32" oninput="exportUpdate()"></input></br>
+                    区切り長さ　　：<input type="text" id="bottomPauseLength" class="boxSpInput" value="3/32" oninput="exportUpdate()"></input></br>
+                    ノートナンバー：<input type="text" id="bottomNoteNo" class="boxSpInput" value="60" oninput="exportUpdate()"></input></br>
+                </div>
+            </div>
+            <div class="bottomArea">
+                <h3>Aviutl lua　　<button type="button" onclick="outputLuaClicked()">lua変換</button></h3>
+                <div>
+                    描画　　　　　：
+                    <select id='bottomDrawType' class="bottomMidiTypeSelect">
+                        <option value='text'>テキスト</option>
+                        <option value='figure'>図形</option>
+                        <option value='image'>画像</option>
+                        <option value='movie'>動画</option>
+                    </select></br>
+                    終了タイミング：<select id='bottomEndType' class="bottomMidiTypeSelect", oninput="exportUpdate()">
+                        <option value='end'>音終了時</option>
+                        <option value='nextStart'>次の音開始時</option>
+                        <option value='none'>なし</option>
+                    </select></br>
+                    テキスト　　　：<input type="text" id="bottomText" class="boxSpInput" value="text"></input></br>
+                    Ⅹ　　　　　　：<input type="text" id="bottomX" class="boxSpInput" value="0"></input></br>
+                    Ｙ　　　　　　：<input type="text" id="bottomY" class="boxSpInput" value="0"></input></br>
+                    開始時間　　　：<input type="text" id="bottomStart" class="boxSpInput" value="0"></input></br>
+                    終了時間　　　：<input type="text" id="bottomEnd" class="boxSpInput" value="10"></input></br>
+                    ファイル　　　：<input type="text" id="bottomFile" class="boxSpInput" value="input"></input> .
+                    <input type="text" id="bottomFileExt" class="boxSpInput inputSmall" value="avi"></input></br>
+                </div>
+            </div>
+            <div class="bottomArea"><textarea class="bottom_textarea" id="luaOutput" spellcheck="false"></textarea></div>
+        </div>
 
         <script src="src/variables.js"></script>
         <script src="https://unpkg.com/@tonejs/midi"></script> <!-- https://github.com/Tonejs/Midi -->
@@ -68,12 +117,8 @@
         <script src="cipher_convert/railFenceConvert.js"></script>
         <script src="cipher_convert/scytaleConverter.js"></script>
         <script src="cipher_convert/splitConverter.js"></script>
+        <script src="src/export.js"></script>
         <script src='src/init.js'></script>
         <script src="src/script.js"></script>
-
-        <script>
-            //console.log(decodeStrHex("3042304430463048304a", "UTF16"));
-            //console.log(decodeStrHex("4f001111", "UTF16"));
-        </script>
     </body>
 </html>

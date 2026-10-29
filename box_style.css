@@ -299,3 +299,31 @@ select::-webkit-scrollbar {
     background-color: #1c2336;
 }
 
+.bottomMidiTypeSelect{
+    display: inline;
+    position: relative;
+    margin: 0px;
+    top: 0px;
+    left: 0px;
+}
+
+.bottom_textarea{
+    margin-top: 10px;
+    width: 100%;
+    height: 100%;
+    resize: none;
+    white-space: pre-wrap;
+    text-wrap: nowrap;
+}
+
+.buttom_button{
+    display:inline;
+}
+
+.inputSmall{
+    width: 50px;
+}
+
+.errorBox{
+    background-color: #6b3a3a;
+}

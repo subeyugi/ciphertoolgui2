@@ -45,18 +45,100 @@ let tenji = [
 ['わ','⠄','001000'],
 ['を','⠔','001010'],
 ['ん','⠴','001011'],
+['っ','⠂','010000'],
+['ー','⠒','010010'],
 ['゛','⠐','000010'],
-['゜','⠠','000001']];
+['゜','⠠','000001'],
+['y','⠈','000100'], //kya
+['Y','⠘','000110'], //bya
+['Ý','⠨','000101']];//pya
+
+youonTable = [
+['きゃ', 'yか'],
+['きゅ', 'yく'],
+['きょ', 'yこ'],
+['しゃ', 'yさ'],
+['しゅ', 'yす'],
+['しょ', 'yそ'],
+['ちゃ', 'yた'],
+['ちゅ', 'yつ'],
+['ちょ', 'yと'],
+['にゃ', 'yな'],
+['にゅ', 'yぬ'],
+['にょ', 'yの'],
+['ひゃ', 'yは'],
+['ひゅ', 'yふ'],
+['ひょ', 'yほ'],
+['みゃ', 'yま'],
+['みゅ', 'yむ'],
+['みょ', 'yも'],
+['りゃ', 'yら'],
+['りゅ', 'yる'],
+['りょ', 'yろ'],
+['ぎゃ', 'Yか'],
+['ぎゅ', 'Yく'],
+['ぎょ', 'Yこ'],
+['じゃ', 'Yさ'],
+['じゅ', 'Yく'],
+['じょ', 'Yこ'],
+['ぢゃ', 'Yた'],
+['ぢゅ', 'Yつ'],
+['ぢょ', 'Yと'],
+['びゃ', 'Yは'],
+['びゅ', 'Yふ'],
+['びょ', 'Yほ'],
+['ぴゃ', 'Ýは'],
+['ぴゅ', 'Ýふ'],
+['ぴょ', 'Ýほ'],
+];
 
 let aiu2tenjiMp = new Map();
 let tenji2aiuMp = new Map();
 let from_bin123456Mp = new Map();
 let to_bin123456Mp = new Map();
-for(let i = 0; i < (tenji).length; i++){
+let sep_youontableMp = new Map();
+let join_youontableMp = new Map();
+for(let i = 0; i < tenji.length; i++){
     aiu2tenjiMp.set(tenji[i][0], tenji[i][1]);
     tenji2aiuMp.set(tenji[i][1], tenji[i][0]);
     from_bin123456Mp.set(tenji[i][2], tenji[i][0]);
     to_bin123456Mp.set(tenji[i][0], tenji[i][2]);
+}
+for(let i = 0; i < youonTable.length; i++){
+    sep_youontableMp.set(youonTable[i][0], youonTable[i][1]);
+    join_youontableMp.set(youonTable[i][1], youonTable[i][0]);
+}
+
+function joinYouon(s){
+    let result = "";
+    for(let i = 0; i < s.length; i++){
+        if(i + 1 < s.length){
+            let tmp = join_youontableMp.get(s[i] + s[i+1]);
+            if(tmp != undefined){
+                result += tmp;
+                i++;
+                continue;
+            }
+        }
+        result += s[i];
+    }
+    return result;
+}
+
+function separateYouon(s){
+    let result = "";
+    for(let i = 0; i < s.length; i++){
+        if(i + 1 < s.length){
+            let tmp = sep_youontableMp.get(s[i] + s[i+1]);
+            if(tmp != undefined){
+                result += tmp;
+                i++;
+                continue;
+            }
+        }
+        result += s[i];
+    }
+    return result;
 }
 
 function decodeTenjiJP(s, isVec=false){
@@ -84,7 +166,8 @@ function decodeTenjiJP(s, isVec=false){
                 if(message == '') message = `"${s[i]}"を変換できません`;
             }
         }
-        result = joinDakuten(result, true);
+        result = joinYouon(result);
+        result = joinDakuten(result, true, false);
         return new ConverterResult(result, message);
     }
 }
@@ -105,7 +188,9 @@ function encodeTenjiJP(s, isVec=false){
         return new ConverterResult(s, message);
     }else{
         if(s == '') new ConverterResult('', message);
+        s = separateYouon(s);
         s = splitDakuten(s, true);
+        s = enlargeLetter(s);
         for(let i = 0; i < s.length; i++){
             let tmp = aiu2tenjiMp.get(s[i]);
             if(tmp != undefined){
@@ -145,7 +230,6 @@ function decodeTenjiBinJP(vec, type="bin123456", isVec=false){
                 s = s[0] + s[3] + s[1] + s[4] + s[2] + s[5];
             }
             tmp = from_bin123456Mp.get(s);
-            console.log("tmp=", tmp);
             if(tmp != undefined){
                 result += tmp;
             }else{
@@ -153,7 +237,9 @@ function decodeTenjiBinJP(vec, type="bin123456", isVec=false){
                 if(message == "") message = `${s}を変換できません`;
             }
         }
-        return new ConverterResult(joinDakuten(result, true), message);
+        result = joinDakuten(result, true);
+        result = joinYouon(result);
+        return new ConverterResult(result, message);
     }
 }
 
@@ -174,7 +260,9 @@ function encodeTenjiBinJP(s, type="bin123456", isVec=false){
     }else{
         let result = [];
         let message = "";
+        s = separateYouon(s);
         s = splitDakuten(s, true);
+        s = enlargeLetter(s);
         for(let i = 0; i < s.length; i++){
             let tmp = to_bin123456Mp.get(s[i]);
             if(tmp != undefined){

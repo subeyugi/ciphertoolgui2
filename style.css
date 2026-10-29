@@ -60,7 +60,19 @@ h10{
     margin: 0px;
     padding: 0px;
     width: 100%;
-    height: 2000px;
+    height: 1500px;
+}
+
+.bottomOutputArea{
+    border-top: #a0a0a0 1px solid;
+    height: 500px;
+    margin: 50px;
+    display: flex;
+}
+
+.bottomArea{
+    width: 33%;
+    height: 100%;
 }
 
 .background_grid{

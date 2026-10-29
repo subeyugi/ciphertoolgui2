@@ -188,10 +188,10 @@ function downBtnClicked(id){
 function elementClicked(id){
     let elememts = Array.from(document.getElementsByClassName('element_' + id));
     elememts.forEach(e => {
-        if(e.style.display == 'block'){
-            e.style.display = 'none';
+        if(e.style.display == "block"){
+            e.style.display = "none";
         }else{
-            e.style.display = 'block';
+            e.style.display = "block";
             cipherObjects.get(id).options["mode"] = e.dataset.value;
         }
     });

@@ -86,6 +86,7 @@ class CipherObject{
         this.type = type;
         let html = '';
         let classList = document.getElementById(`box_${this.id}`).classList;
+        let textType;
         document.getElementById('sel_' + this.id).value = type;
         classList.remove('code');
         classList.remove('strconv');
@@ -93,6 +94,9 @@ class CipherObject{
         classList.remove('math');
         document.getElementById(`fromId_${this.id}`).style = 'display: absolute;'
         document.getElementById(`txt_${this.id}`).classList.remove('text_box_large');
+        if(this.fromIdMain != ""){
+            textType = getTextType(cipherObjects.get(this.fromIdMain).text);
+        }
 
         switch(this.type){
             case CipherType.none:
@@ -117,6 +121,7 @@ class CipherObject{
             case CipherType.charcode:
                 this.options = {"code": "SJIS", "mode": "decodeHex", "add" : false};
                 if(option != undefined) this.options = option;
+                else this.options.mode = (textType == "alphabet" || textType == "number") ? "decodeHex" : "encodeHex";
                 html = `<select id='mode_${this.id}' class='boxSpElem' onchange='optionChanged("${this.id}", "mode")'>
                         <option ${this.options.mode=='decodeHex'?'selected':''} value='decodeHex'>16進数→文字</option>
                         <option ${this.options.mode=='decodeBin'?'selected':''} value='decodeBin'>2進数→文字</option>
@@ -139,6 +144,9 @@ class CipherObject{
             case CipherType.charIndex:
                 this.options = {"mode": "num2alpha"};
                 if(option != undefined) this.options = option;
+                else if(textType == "number") this.options.mode = "num2alpha";
+                else if(textType == "alphabet") this.options.mode = "alpha2num";
+                else this.options.mode = "aiu2num";
                 html = `<select id='mode_${this.id}' class='boxSpElem' onchange='optionChanged("${this.id}", "mode")'>
                         <option ${this.options.mode=='num2alpha'?'selected':''} value='num2alpha'>0,1,2 → abc</option>
                         <option ${this.options.mode=='num2aiu'?'selected':''} value='num2aiu'>0,1,2 → あいう</option>
@@ -152,6 +160,9 @@ class CipherObject{
             case CipherType.morse:
                 this.options = {"mode": "morse2jp"};
                 if(option != undefined) this.options = option;
+                else if(textType == "morse") this.options.mode = "morse2jp";
+                else if(textType == "alphabet") this.options.mode = "en2morse";
+                else this.options.mode = "jp2morse";
                 html = `<select id='mode_${this.id}' class='boxSpElem' onchange='optionChanged("${this.id}", "mode")'>
                         <option ${this.options.mode=='morse2jp'?'selected':''} value='morse2jp'>モールス→日本語</option>
                         <option ${this.options.mode=='morse2en'?'selected':''} value='morse2en'>モールス→英語</option>
@@ -163,6 +174,7 @@ class CipherObject{
             case CipherType.tenji:
                 this.options = {"mode": "tenji2jp", "type":"tenji"};
                 if(option != undefined) this.options = option;
+                else this.options.mode = (textType == "tenji" ? "tenji2jp" : "jp2tenji");
                 html = `<select id='mode_${this.id}' class='boxSpElem' onchange='optionChanged("${this.id}", "mode")'>
                         <option ${this.options.mode=='tenji2jp'?'selected':''} value='tenji2jp'>点字→日本語</option>
                         <option ${this.options.mode=='jp2tenji'?'selected':''} value='jp2tenji'>日本語→点字</option>
@@ -178,6 +190,7 @@ class CipherObject{
             case CipherType.twotouch:
                 this.options = {"mode": "num2char"};
                 if(option != undefined) this.options = option;
+                else this.options.mode = (textType == "number" ? "num2char" : "char2num");
                 html = `<select id='mode_${this.id}' class='boxSpElem' onchange='optionChanged("${this.id}", "mode")'>
                         <option ${this.options.mode=='num2char'?'selected':''} value='num2char'>111213→あいう</option>
                         <option ${this.options.mode=='num2alpha'?'selected':''} value='char2num'>あいう→111213</option>
@@ -193,6 +206,7 @@ class CipherObject{
             case CipherType.mikaka:
                 this.options = {"mode": "en2jp"};
                 if(option != undefined) this.options = option;
+                else this.options.mode = (textType == "alphabet" ? "en2jp" : "jp2en");
                 html = `<div class='select_element element_${this.id}' data-value='en2jp' onClick='elementClicked("${this.id}")' style='display: ${this.options.mode=='en2jp'?'block':'none'};'>ntt→みかか</div>
                     <div class='select_element element_${this.id}' data-value='jp2en' onClick='elementClicked("${this.id}")' style='display: ${this.options.mode=='jp2en'?'block':'none'};'>みかか→ntt</div>`;
                 classList.add('strconv');
@@ -401,7 +415,6 @@ function optionChanged(id, option, update = true){
                 }
             }
             obj.setLinkId(fromIds);
-            console.log(s, fromIds);
         break;
         case CipherType.calc:
             s = obj.options.exp;
