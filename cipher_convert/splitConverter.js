@@ -20,8 +20,7 @@ function splitByChar(s, char){
         for(let k = 0; k < s[0][j].length; k++){
             result[j][k] = [];
             for(let i = 0; i < s[0][j][k].length; i++){
-                if(result[j][k][Math.floor(i / interval)] == undefined) result[j][k][Math.floor(i / interval)] = '';
-                result[j][k][Math.floor(i / interval)] += s[0][j][k][i];
+                result[j][k] = s[0][j][k].split(char);
             }
         }   
     }

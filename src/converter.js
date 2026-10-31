@@ -296,7 +296,7 @@ function updateText(to_id){
                     toObj.message = tmp.message;
                     break;
                 case 'splitChar':
-                    tmp = splitByInterval(fromTextSplit, parseInt(options.val));
+                    tmp = splitByChar(fromTextSplit, options.val);
                     toObj.text = joinText(tmp.result);
                     toObj.message = tmp.message;
                     break;

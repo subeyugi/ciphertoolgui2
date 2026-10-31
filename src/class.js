@@ -248,9 +248,9 @@ class CipherObject{
                 this.options = {'mode': 'splitInterval', 'val' : '4'};
                 if(option != undefined) this.options = option;
                 html = `<select id='mode_${this.id}' class='boxSpElem' onchange='optionChanged("${this.id}", "mode")'>
-                        <option ${this.options.mode=='num2char'?'selected':''} value='splitInterval'>文字数で分割</option>
-                        <option ${this.options.mode=='num2alpha'?'selected':''} value='splitChar'>指定文字で分割</option>
-                        <option ${this.options.mode=='num2alpha'?'selected':''} value='join'>結合</option>
+                        <option ${this.options.mode=='splitInterval'?'selected':''} value='splitInterval'>文字数で分割</option>
+                        <option ${this.options.mode=='splitChar'?'selected':''} value='splitChar'>指定文字で分割</option>
+                        <option ${this.options.mode=='join'?'selected':''} value='join'>結合</option>
                         </select>
                         <input id='val_${this.id}' class='boxSpInput' oninput='optionChanged("${this.id}", "val")' value='${this.options.val}'>`;
                 classList.add('strswap');
