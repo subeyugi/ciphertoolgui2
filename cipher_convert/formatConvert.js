@@ -5,7 +5,7 @@
  */
 
 function subConvertFormat(s, variable){
-    //console.log("subConvertFormat", s, variable)
+    console.log("subConvertFormat", s, variable)
     let result = "";
     let symbolIdx = [undefined, undefined, undefined];
     for(let i = 0; i < s.length; i++){

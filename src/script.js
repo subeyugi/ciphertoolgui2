@@ -307,6 +307,9 @@ function copyURLClicked(){
             case CipherType.format:
                 option = `${encodeURI(e.options.format)}`;
                 break;
+            case CipherType.array:
+                option = `${encodeURI(e.options.format)}`;
+                break;
             case CipherType.scytale:
                 option = `${e.options.mode}_${e.options.interval}`;
                 break;
@@ -314,7 +317,7 @@ function copyURLClicked(){
                 option = `${e.options.mode}_${e.options.rail}`;
                 break;
             case CipherType.baseconv:
-                option = `${e.options.from}_${e.options.to}`;
+                option = `${e.options.from}_${e.options.to}_${e.options.vecIn ? "T" : "F"}_${e.options.vecOut ? "T" : "F"}`;
                 break;
             case CipherType.calc:
                 option = `${encodeURI(e.options.exp)}`;

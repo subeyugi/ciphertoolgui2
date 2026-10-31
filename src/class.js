@@ -16,10 +16,11 @@ const CipherType = {
     reverse: 14, 
     split: 15,
     format: 16,
-    scytale: 17,
-    railfence: 18, 
-    baseconv: 19,
-    calc: 20,
+    array: 17,
+    scytale: 18,
+    railfence: 19, 
+    baseconv: 20,
+    calc: 21,
 };
 const cntCipherType = Object.keys(CipherType).length;
 
@@ -69,6 +70,7 @@ class CipherObject{
                 <option value='${CipherType.reverse}' class='type_strswap'>逆順</option>
                 <option value='${CipherType.split}' class='type_strswap'>分割・結合</option>
                 <option value='${CipherType.format}' class='type_strswap'>フォーマット</option>
+                <option value='${CipherType.array}' class='type_strswap'>配列</option>
                 <option value='${CipherType.scytale}' class='type_strswap'>スキュタレー</option>
                 <option value='${CipherType.railfence}' class='type_strswap'>レールフェンス</option>
                 <option value='${CipherType.baseconv}' class='type_math'>進数変換</option>
@@ -259,6 +261,12 @@ class CipherObject{
                 html = `<textarea id='format_${this.id}' class='boxInput' oninput='optionChanged("${this.id}", "format")' placeholder='{A1[0]}'>${this.options.format}</textarea>`;
                 classList.add('strswap');
                 break;
+            case CipherType.array:
+                this.options = {'format': `0`};
+                if(option != undefined) this.options = option;
+                html = `<input id='format_${this.id}' class='boxSpInput' oninput='optionChanged("${this.id}", "format")' placeholder='2:4' value='${this.options.format}'></input>`;
+                classList.add('strswap');
+                break;
             case CipherType.scytale:
                 html = ``;
                 this.options = {'mode' : 'decode', 'interval': '3'};
@@ -278,9 +286,11 @@ class CipherObject{
                 classList.add('strswap');
                 break;
             case CipherType.baseconv:
-                this.options = {'from': '10', 'to': '16'};
+                this.options = {'from': '10', 'to': '16', 'vecIn': false, 'vecOut':false};
                 if(option != undefined) this.options = option;
-                html = `<input id='from_${this.id}' class='num_input_from' type='number' value='${this.options.from}' oninput='optionChanged("${this.id}", "from")'>進数→<input id='to_${this.id}' class='num_input_to' type='number' value='${this.options.to}' oninput='optionChanged("${this.id}", "to")'>進数`;
+                console.log(this.options);
+                html = `<input id='from_${this.id}' class='num_input_from' type='number' value='${this.options.from}' oninput='optionChanged("${this.id}", "from")'>進数→<input id='to_${this.id}' class='num_input_to' type='number' value='${this.options.to}' oninput='optionChanged("${this.id}", "to")'>進数
+                    <input id='vecIn_${this.id}' type='checkbox' onchange='optionChanged("${this.id}", "vecIn")' ${this.options.vecIn?'checked':''}>in配列</input><input id='vecOut_${this.id}' type='checkbox' onchange='optionChanged("${this.id}", "vecOut")' ${this.options.vecOut?'checked':''}>out配列</input>`;
                 classList.add('math');
                 break;
             case CipherType.calc:
@@ -415,7 +425,11 @@ function optionChanged(id, option, update = true){
                 }
             }
             obj.setLinkId(fromIds);
-        break;
+            break;
+        case CipherType.baseconv:
+            obj.options.vecIn = document.getElementById(`vecIn_${id}`).checked;
+            obj.options.vecOut = document.getElementById(`vecOut_${id}`).checked;
+            break;
         case CipherType.calc:
             s = obj.options.exp;
             startIdx = -1;

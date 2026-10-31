@@ -65,6 +65,7 @@ function splitText(s){
 }
 
 function joinText(vec){
+    console.log(vec);
     let result = '';
     for(let i = 0; i < vec.length; i++){
         if(i > 0) result += sep3;
@@ -204,7 +205,6 @@ function updateText(to_id){
                     toObj.message = tmp.message;
                     break;
                 case 'alpha2num':
-                    //console.log("alpha2num", fromTextSplit);
                     tmp = alpha2num(fromTextSplit, true);
                     toObj.text = joinText(tmp.result);
                     toObj.message = tmp.message;
@@ -284,7 +284,7 @@ function updateText(to_id){
             toObj.message = tmp.message;
             break;
         case CipherType.baseconv:
-            tmp = convertBase(fromTextSplit, parseInt(options.from), parseInt(options.to), true);
+            tmp = convertBase(fromTextSplit, parseInt(options.from), parseInt(options.to), options.vecIn, options.vecOut);
             toObj.text = joinText(tmp.result);
             toObj.message = tmp.message;
             break;
@@ -310,6 +310,13 @@ function updateText(to_id){
         case CipherType.format:
             //optionの方が分割ありになる
             tmp = convertFormat(document.getElementById(`format_${to_id}`).value, getResults(toObj.fromIds), true);
+            toObj.text = joinText(tmp.result);
+            toObj.message = tmp.message;
+            break;
+        case CipherType.array:
+            //optionの方が分割ありになる
+            tmp = convertArray(fromTextSplit, options.format);
+            console.log("tmp", tmp);
             toObj.text = joinText(tmp.result);
             toObj.message = tmp.message;
             break;

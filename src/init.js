@@ -150,6 +150,9 @@ if(urlQueryParams != ""){
             case "format":
                 json["options"] = {"format": decodeURI(option[0])};
                 break;
+            case "array":
+                json["options"] = {"format": decodeURI(option[0])};
+                break;
             case "scytale":
                 json["options"] = {"mode": option[0]};
                 break;
@@ -157,7 +160,7 @@ if(urlQueryParams != ""){
                 json["options"] = {"mode": option[0], "rail": option[1]};
                 break;
             case "baseconv":
-                json["options"] = {"from": option[0], "to": option[1]};
+                json["options"] = {"from": option[0], "to": option[1], "vecIn": option[2]=="T", "vecOut":option[3]=="T"};
                 break;
             case "calc":
                 json["options"] = {"exp": decodeURI(option[0])};

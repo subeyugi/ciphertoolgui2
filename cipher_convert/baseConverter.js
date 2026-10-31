@@ -4,61 +4,149 @@ for(let i = 0; i < 36; i++){
     rletters.set(letters[i], i);
 }
 
-function fromBase10(s, base){
-    let message = '';
-    let n = BigInt(s);
-    let bbase = BigInt(base);
-    let vec = []
-    while(n > 0){
-        vec.push(letters[n % bbase]);
-        n /= bbase;
+function convertBaseVec(vec, fromBase, toBase){
+    console.log(vec, fromBase, toBase)
+    if(fromBase < 2){
+        return new ConverterResult("", `進数は2以上にしてください`);
     }
-    vec.reverse();
-    return new ConverterResult(vec.join(''), message);
+    if(toBase < 2){
+        return new ConverterResult("", `進数は2以上にしてください`);
+    }
+    let n = 0n;
+    let bfbase = BigInt(fromBase);
+    for(let i = 0; i < vec.length; i++){
+        if(vec[i] >= fromBase){
+            return new ConverterResult("", `各桁は${fromBase - 1}以下にしてください`);
+        }
+        n *= BigInt(bfbase);
+        n += BigInt(vec[i]);
+    }
+
+    let result = [];
+    let btbase = BigInt(toBase);
+    while(n > 0n){
+        result.push(parseInt(n % btbase));
+        n /= btbase;
+    }
+    result.reverse();
+    return new ConverterResult(result, "");
 }
 
-function toBase10(s, base){
-    let message = '';
-    let n = 0n;
-    let bbase = BigInt(base);
+function baseN2Vec(s){
+    let result = [];
     for(let i = 0; i < s.length; i++){
-        n *= BigInt(bbase);
         let tmp = rletters.get(s[i]);
-        if(tmp == undefined) return new ConverterResult(getErrorStr(s), `"${s[i]}"は使用できません`);
-        n += BigInt(rletters.get(s[i]));
-        if(rletters.get(s[i]) >= base){
-            return new ConverterResult(getErrorStr(s), `${base}進数では"${s[i]}"は使用できません`);
+        if(tmp != undefined){
+            result.push(rletters.get(s[i]));
+        }else{
+            return new ConverterResult("", `${s[i]}を変換できません`);
         }
     }
-    return new ConverterResult(n.toString(), message);
+    return new ConverterResult(result, "");
 }
 
-function convertBase(s, fromBase, toBase, isVec = false){
-    let result = '';
+function vec2BaseN(vec){
+    let result = "";
+    for(let i = 0; i < vec.length; i++){
+        let tmp = letters[vec[i]];
+        if(tmp != undefined){
+            result += letters[vec[i]];
+        }else{
+            return new ConverterResult("", `${vec[i]}を変換できません`);
+        }
+    }
+    return new ConverterResult(result, "");
+}
+
+function convertBase(s, fromBase, toBase, isVecFrom=false, isVecTo=false){
+    let result = [];
     let message = '';
-    if(isVec){
+    if(isVecFrom && isVecTo){
         for(let i = 0; i < s.length; i++){
-            for(let j = 0; j < s[i].length; j++){
-                for(let k = 0; k < s[i][j].length; k++){
-                    let tmp = convertBase(s[i][j][k], fromBase, toBase);
-                    s[i][j][k] = tmp.result;
-                    if(message == '') message = tmp.message;
-                }   
+            result[i] = [];
+            for(let j = 0; j  < s[i].length; j++){
+                result[i][j] = [];
+                let tmp = convertBaseVec(s[i][j], fromBase, toBase);
+                if(tmp.message == ""){
+                    for(let k = 0; k < tmp.result.length; k++){
+                        result[i][j][k] = tmp.result[k];
+                    }
+                }else{
+                    result[0][i][j] = getErrorStr(s[i][j]);
+                    if(message == "") message = tmp.message;
+                }
             }
         }
-        return new ConverterResult(s, message);
-    }else{
-        if(!(2 <= fromBase && fromBase <= 36)){
-            return new ConverterResult(getErrorStr(s), "2進数~36進数を設定してください");
+    }else if(isVecFrom && !isVecTo){
+        result[0] = [];
+        for(let i = 0; i < s.length; i++){
+            result[0][i] = [];
+            for(let j = 0; j  < s[i].length; j++){
+                let tmp = convertBaseVec(s[i][j], fromBase, toBase);
+                if(tmp.message == ""){
+                    let tmp2 = vec2BaseN(tmp.result);
+                    if(tmp2.message == ""){
+                        result[0][i][j] = tmp2.result;
+                    }else{
+                        result[0][i][j] = getErrorStr(s[i][j]);
+                        if(message == "") message = tmp.message;
+                    }
+                }else{
+                    result[0][i][j] = getErrorStr(s[i][j]);
+                    if(message == "") message = tmp.message;
+                }
+            }
         }
-        if(!(2 <= toBase && toBase <= 36)){
-            return new ConverterResult(getErrorStr(s), "2進数~36進数を設定してください");
+    }else if(!isVecFrom && isVecTo){
+        for(let i = 0; i  < s[0].length; i++){
+            result[i] = [];
+            for(let j = 0; j < s[0][i].length; j++){
+                result[i][j] = [];
+                let tmp2 = baseN2Vec(s[0][i][j]);
+                if(tmp2.message == ""){
+                    let tmp = convertBaseVec(tmp2.result, fromBase, toBase);
+                    if(tmp.message == ""){
+                        for(let k = 0; k < tmp.result.length; k++){
+                            result[i][j][k] = tmp.result[k];
+                        }
+                    }else{
+                        result[i][j] = getErrorStr(s[0][i][j]);
+                        if(message == "") message = tmp.message;
+                    }
+                }else{
+                    result[i][j] = getErrorStr(s[0][i][j]);
+                    if(message = "") message = tmp2.message;
+                }
+            }
         }
-        let base10 = toBase10(s, fromBase);
-        if(base10.message != ''){
-            return convertBase(getErrorStr(s), base10.message);
+    }else if(!isVecFrom && !isVecTo){
+        for(let i = 0; i < s.length; i++){
+            result[i] = [];
+            for(let j = 0; j  < s[i].length; j++){
+                result[i][j] = [];
+                for(let k = 0; k < s[i][j].length; k++){
+                    let tmp2 = baseN2Vec(s[i][j][k]);
+                    if(tmp2.message == ""){
+                        let tmp = convertBaseVec(tmp2.result, fromBase, toBase);
+                        if(tmp.message == ""){
+                            let tmp3 = vec2BaseN(tmp.result);
+                            if(tmp3.message == ""){
+                                result[i][j][k] = tmp3.result;
+                            }else{
+                                result[i][j][k] = getErrorStr(s[i][j][k]);
+                                if(message = "") message = tmp3.message;
+                            }
+                        }else{
+                            result[i][j][k] = getErrorStr(s[i][j][k]);
+                            if(message == "") message = tmp.message;
+                        }
+                    }else{
+                        result[i][j][k] = getErrorStr(s[i][j][k]);
+                        if(message == "") message = tmp.message;
+                    }
+                }
+            }
         }
-        result = fromBase10(base10.result, toBase).result;
-        return new ConverterResult(result, message);
     }
+    return new ConverterResult(result, message);
 }
