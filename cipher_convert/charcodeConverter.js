@@ -109,7 +109,15 @@ function decodeStrHex(s, charcode, add, isVec=false){
 
         if(charcode == "UTF16"){
             //「一(4e00)」など00終わりの場合「N(4e)」に変換される問題があったため、UTF16の場合のみlittle endianで変換
-            const unicodeArray = Encoding.convert(array.toReversed(), {
+            if(array.length % 2 == 1){
+                array.push(0);
+            }
+            for(let i = 0; i < array.length; i += 2){
+                let tmp = array[i];
+                array[i] = array[i + 1];
+                array[i + 1] = tmp;
+            }
+            const unicodeArray = Encoding.convert(array, {
                 to: 'UNICODE',
                 from: "UTF16LE"
             });
