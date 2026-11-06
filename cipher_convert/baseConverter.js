@@ -22,6 +22,10 @@ function convertBaseVec(vec, fromBase, toBase){
         n += BigInt(vec[i]);
     }
 
+    if(n == 0n){
+        return new ConverterResult([0], "");
+    }
+    
     let result = [];
     let btbase = BigInt(toBase);
     while(n > 0n){
@@ -150,3 +154,5 @@ function convertBase(s, fromBase, toBase, isVecFrom=false, isVecTo=false){
     }
     return new ConverterResult(result, message);
 }
+
+console.log(convertBaseVec([0], 2, 10));
