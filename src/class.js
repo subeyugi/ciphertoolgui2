@@ -42,7 +42,7 @@ class CipherObject{
         this.options = {};
         this.separator1 = ',';
         this.separator2 = ' ';
-        this.separator3 = '\n';
+        this.separator3 = '\\n';
         this.text = '';
         this.message = '';
     }
@@ -220,6 +220,7 @@ class CipherObject{
                     <div class='boxSpArrow'>→</div>
                     <input type='text' class='boxSpInput2' id='to_${this.id}' placeholder='0,1,2' oninput='optionChanged("${this.id}", "to")' value='${this.options.to}'>`;
                 classList.add('strconv');
+                break;
             case CipherType.atbash:
                 classList.add('strconv');
                 this.options = {'from': '', 'to': ''};
@@ -288,7 +289,6 @@ class CipherObject{
             case CipherType.baseconv:
                 this.options = {'from': '10', 'to': '16', 'vecIn': false, 'vecOut':false};
                 if(option != undefined) this.options = option;
-                console.log(this.options);
                 html = `<input id='from_${this.id}' class='num_input_from' type='number' value='${this.options.from}' oninput='optionChanged("${this.id}", "from")'>進数→<input id='to_${this.id}' class='num_input_to' type='number' value='${this.options.to}' oninput='optionChanged("${this.id}", "to")'>進数
                     <input id='vecIn_${this.id}' type='checkbox' onchange='optionChanged("${this.id}", "vecIn")' ${this.options.vecIn?'checked':''}>in配列</input><input id='vecOut_${this.id}' type='checkbox' onchange='optionChanged("${this.id}", "vecOut")' ${this.options.vecOut?'checked':''}>out配列</input>`;
                 classList.add('math');
@@ -344,7 +344,6 @@ class CipherObject{
         this.separator3 = json.separator3;
         this.text = json.text;
         this.message = '';
-        //console.log(this);
     }
 
     delete(){
@@ -407,7 +406,6 @@ function optionChanged(id, option, update = true){
             }else if(option == "chk"){
                 obj.options.add = document.getElementById(`chk_${id}`).checked;
             }
-            //console.log(obj)
             break;
         case CipherType.format:
             s = obj.options.format;

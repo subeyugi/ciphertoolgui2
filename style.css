@@ -197,3 +197,14 @@ input[type='file']{
     left: calc((100% - 500px) / 2);
     background-color: #505050;
 }
+
+.zoomDelButton{
+    position: absolute;
+    top: 2px;
+    left: 175px;
+    cursor: pointer;
+}
+
+.zoomDelButton:hover{
+    color: #FF0000;
+}

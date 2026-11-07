@@ -51,6 +51,30 @@ function getTextType(s){
     return "other";
 }
 
+function viewNewLine(s){
+    let result = "";
+    for(let i = 0; i < s.length; i++){
+        if(s[i] == "\n"){
+            result += "\\n";
+        }else{
+            result += s[i];
+        }
+    }
+    return result;
+}
+function unviewNewLine(s){
+    let result = "";
+    for(let i = 0; i < s.length; i++){
+        if(s[i] +  s[i + 1] == "\\n"){
+            result += "\n";
+            i++;
+        }else{
+            result += s[i];
+        }
+    }
+    return result;
+}
+
 //url取得
 urlQueryParams = new URL(window.location.href).search.substring(1);
 console.log("urlParam=", urlQueryParams);
@@ -89,7 +113,7 @@ if(urlQueryParams != ""){
         document.getElementById(`box_${id}`).remove();
     });
     cipherObjects.clear();
-
+    
     for(let i = 1; i < vec.length - 1; i++){
         let obj = new CipherObject();
         let json = {};
@@ -99,9 +123,9 @@ if(urlQueryParams != ""){
         json["fromIds"] = ([tmp[1]] == ""? [] : [tmp[1]]);
         json["toIds"] = [];
         json["type"] = tmp[2];
-        json["separator1"] = ",";
-        json["separator2"] = " ";
-        json["separator3"] = "\n";
+        json["separator1"] = decodeURI(tmp[3]);
+        json["separator2"] = decodeURI(tmp[4]);
+        json["separator3"] = decodeURI(tmp[5]);
         json["text"] = "";
 
         option = tmp[3].split("_");
@@ -131,6 +155,7 @@ if(urlQueryParams != ""){
                 json["options"] = {"mode": option[0]};
                 break;
             case "strconv":
+                console.log("option in");
                 json["options"] = {"from": decodeURIComponent(option[0]), "to": decodeURIComponent(option[1])};
                 break;
             case "atbash":
@@ -183,3 +208,4 @@ if(urlQueryParams != ""){
     updateAllText();
     console.log("url input finished");
 }
+

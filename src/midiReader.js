@@ -40,8 +40,6 @@ async function midiInput(id){
         mpNoteLength.set(notes[i].durationTicks, -1);
         if(i >= 1) mpRestLength.set(notes[i].ticks - (notes[i - 1].ticks + notes[i - 1].durationTicks), -1);
     }
-    //console.log(noteStart);
-    //console.log(noteLength);
     let result = "";
     switch(type){
         case "noteNo":

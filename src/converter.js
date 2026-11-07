@@ -84,9 +84,9 @@ function updateText(to_id){
     let options = toObj.options;
     let fromText = '';
     let tmp;
-    sep1 = cipherObjects.get(to_id).separator1;
-    sep2 = cipherObjects.get(to_id).separator2;
-    sep3 = cipherObjects.get(to_id).separator3;
+    sep1 = unviewNewLine(cipherObjects.get(to_id).separator1);
+    sep2 = unviewNewLine(cipherObjects.get(to_id).separator2);
+    sep3 = unviewNewLine(cipherObjects.get(to_id).separator3);
     if(toObj.fromIds.size == 1){
         fromText = cipherObjects.get(toObj.fromIds.values().next().value).text;
         fromTextSplit = splitText(fromText);
@@ -240,7 +240,7 @@ function updateText(to_id){
             }
             break;
         case CipherType.strconv:
-            tmp = convertString(fromTextSplit, options.from.split(sep1), options.to.split(sep1), true);
+            tmp = convertString(fromTextSplit, unviewNewLine(options.from).split(sep1), unviewNewLine(options.to).split(sep1), true);
             toObj.text = joinText(tmp.result);
             toObj.message = tmp.message;
             break;

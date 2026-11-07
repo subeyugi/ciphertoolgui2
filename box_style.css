@@ -82,6 +82,7 @@ select::-webkit-scrollbar {
     left:125px;
     padding: 0px;
     font-size: 10px;
+    cursor: pointer;
 }
 
 .up_btn:hover{
@@ -96,6 +97,7 @@ select::-webkit-scrollbar {
     left:125px;
     padding: 0px;
     font-size: 10px;
+    cursor: pointer;
 }
 
 .down_btn:hover{

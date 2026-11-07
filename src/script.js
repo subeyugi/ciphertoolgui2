@@ -1,6 +1,5 @@
 //boxClicked クリックしたとき
 document.getElementById("main_area").addEventListener("mousedown", (e) =>{
-    document.getElementById("zoomArea").style = "display: none";
     selectFromId = undefined;
     let rect = e.currentTarget.getBoundingClientRect();
     let position = fromXY(e.clientX - rect.left, e.clientY - rect.top);
@@ -157,6 +156,7 @@ const resizeObserver = new ResizeObserver(entries => {
 resizeObserver.observe(document.getElementById('input_text'));
 
 function saveBtnClicked(){
+    console.log(cipherObjects);
     let text = '';
     let result = [];
     cipherObjects.forEach((val, key)=>{
@@ -215,6 +215,8 @@ document.addEventListener('keydown', (event) => {
         document.getElementById(`box_${nowSelectId}`).remove();
         cipherObjects.get(nowSelectId).delete();
         cipherObjects.delete(nowSelectId);
+        document.getElementById("zoomArea").style = "display:none";
+        sepBoxId = "";
         
         if(inputId == nowSelectId){
             inputId = "";
@@ -252,13 +254,12 @@ document.getElementById('file_input').addEventListener('change', (e) => {
             document.getElementById(`box_${id}`).remove();
         });
         cipherObjects.clear();
-
         for(let i = 0; i < result.length; i++){
             let obj = new CipherObject();
-            //console.log(result[i]);
             obj.updateFromJSON(result[i]);
             cipherObjects.set(obj.id, obj);
             document.getElementById('zoomArea').insertAdjacentHTML('beforebegin', obj.makeBoxHtml());
+            console.log("options", obj.options);
             cipherObjects.get(obj.id).changeType(obj.type, obj.options, false);
         }
         updateAllText();
@@ -268,6 +269,7 @@ document.getElementById('file_input').addEventListener('change', (e) => {
 
 //URL変換ボタンクリック
 function copyURLClicked(){
+    console.log(cipherObjects);
     let urlParam = "https://ciphertoolgui2.pentate.workers.dev?";
     cipherObjects.forEach(e => {
         option = ""
@@ -335,36 +337,14 @@ function copyURLClicked(){
                 option = `${encodeURIComponent(e.options.exp)}`;
                 break;
         }
-        urlParam += `(${e.id}.${e.fromIdMain}.${Object.keys(CipherType)[e.type]}.${option})`
+        let sep1 = encodeURI(e.separator1);
+        let sep2 = encodeURI(e.separator2);
+        let sep3 = encodeURI(e.separator3);
+        urlParam += `(${e.id}.${e.fromIdMain}.${Object.keys(CipherType)[e.type]}.${option}.${sep1}.${sep2}.${sep3})`
     });
-    console.log(urlParam);
     navigator.clipboard.writeText(urlParam).then(() => {
         console.log("copy finished", urlParam);
     });
-}
-
-function viewNewLine(s){
-    let result = "";
-    for(let i = 0; i < s.length; i++){
-        if(s[i] == "\n"){
-            result += "\\n";
-        }else{
-            result += s[i];
-        }
-    }
-    return result;
-}
-function unviewNewLine(s){
-    let result = "";
-    for(let i = 0; i < s.length; i++){
-        if(s[i] +  s[i + 1] == "\\n"){
-            result += "\n";
-            i++;
-        }else{
-            result += s[i];
-        }
-    }
-    return result;
 }
 
 function sepInput(sepNo){
@@ -374,6 +354,11 @@ function sepInput(sepNo){
         cipherObjects.get(sepBoxId).separator2 = unviewNewLine(document.getElementById("sep2").value);
     }else if(sepNo == "sep3"){
         cipherObjects.get(sepBoxId).separator3 = unviewNewLine(document.getElementById("sep3").value);
+        console.log("[" + cipherObjects.get(sepBoxId).separator3 + "]");
     }
     updateAllText();
+}
+
+function zoomDelButtonClicked(){
+    document.getElementById("zoomArea").style = "display:none";
 }
