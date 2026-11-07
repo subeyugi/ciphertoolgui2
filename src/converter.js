@@ -65,7 +65,6 @@ function splitText(s){
 }
 
 function joinText(vec){
-    console.log(vec);
     let result = '';
     for(let i = 0; i < vec.length; i++){
         if(i > 0) result += sep3;
@@ -241,7 +240,7 @@ function updateText(to_id){
             }
             break;
         case CipherType.strconv:
-            tmp = convertString(fromTextSplit, options.from.split(","), options.to.split(","), true);
+            tmp = convertString(fromTextSplit, options.from.split(sep1), options.to.split(sep1), true);
             toObj.text = joinText(tmp.result);
             toObj.message = tmp.message;
             break;

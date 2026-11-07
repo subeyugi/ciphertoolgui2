@@ -5,7 +5,6 @@
 //s: アルファベット小文字のみで構成された文字列
 //rot: 整数
 function decodeCaesar(s, rot, isVec=false){
-    console.log(s);
     let result = '';
     let message = '';
     if(isVec){

@@ -1,5 +1,6 @@
 //boxClicked クリックしたとき
 document.getElementById("main_area").addEventListener("mousedown", (e) =>{
+    document.getElementById("zoomArea").style = "display: none";
     selectFromId = undefined;
     let rect = e.currentTarget.getBoundingClientRect();
     let position = fromXY(e.clientX - rect.left, e.clientY - rect.top);
@@ -25,6 +26,17 @@ document.getElementById("main_area").addEventListener("mousedown", (e) =>{
             document.getElementById(`box_${position.id}`).classList.add('clicked');
             nowSelectId = position.id;
         }
+
+        //区切り設定
+        let obj = cipherObjects.get(position.id);
+        document.getElementById(`box_${position.id}`).addEventListener("dblclick", (e) => {
+            if((e.clientY - rect.top) - position.y < 100) return;
+            sepBoxId = position.id;
+            document.getElementById("zoomArea").style = `display:relative; left:${position.x}px; top:${position.y + 130}px`;
+            document.getElementById("sep1").value = viewNewLine(obj.separator1);
+            document.getElementById("sep2").value = viewNewLine(obj.separator2);
+            document.getElementById("sep3").value = viewNewLine(obj.separator3);
+        });
     }
 
     //新規リンクbox作成、box移動用selectFromId取得、下黒textエリアに判定
@@ -90,7 +102,7 @@ document.getElementById("main_area").addEventListener("mouseup", (e) => {
             }else{
                 //新規box追加
                 let tmp = new CipherObject(selectToId, selectFromId);
-                document.getElementById("main_area").insertAdjacentHTML('beforeend', tmp.makeBoxHtml());
+                document.getElementById("zoomArea").insertAdjacentHTML('beforebegin', tmp.makeBoxHtml());
                 cipherObjects.set(selectToId, tmp);
                 cipherObjects.get(selectFromId).toIds.add(selectToId);
                 cipherObjects.get(selectToId).fromIds.add(selectFromId);
@@ -246,7 +258,7 @@ document.getElementById('file_input').addEventListener('change', (e) => {
             //console.log(result[i]);
             obj.updateFromJSON(result[i]);
             cipherObjects.set(obj.id, obj);
-            document.getElementById('main_area').insertAdjacentHTML('beforeend', obj.makeBoxHtml());
+            document.getElementById('zoomArea').insertAdjacentHTML('beforebegin', obj.makeBoxHtml());
             cipherObjects.get(obj.id).changeType(obj.type, obj.options, false);
         }
         updateAllText();
@@ -263,7 +275,7 @@ function copyURLClicked(){
             case CipherType.none:
                 break;
             case CipherType.input:
-                option = encodeURI(e.text);
+                option = encodeURIComponent(e.text);
                 break;
             case CipherType.midi:
                 break;
@@ -289,12 +301,12 @@ function copyURLClicked(){
                 option = `${e.options.mode}`;
                 break;
             case CipherType.strconv:
-                option = `${encodeURI(e.options.from)}_${encodeURI(e.options.to)}`;
+                option = `${encodeURIComponent(e.options.from)}_${encodeURIComponent(e.options.to)}`;
                 break;
             case CipherType.atbash:
                 break;
             case CipherType.vigenere:
-                option = `${e.options.mode}_${encodeURI(e.options.key)}`;
+                option = `${e.options.mode}_${encodeURIComponent(e.options.key)}`;
                 break;
             case CipherType.polybius:
                 option = `${e.options.mode}`;
@@ -302,13 +314,13 @@ function copyURLClicked(){
             case CipherType.reverse:
                 break;
             case CipherType.split:
-                option = `${encodeURI(e.options.mode)}_${encodeURI(e.options.val)}`;
+                option = `${encodeURIComponent(e.options.mode)}_${encodeURIComponent(e.options.val)}`;
                 break;
             case CipherType.format:
-                option = `${encodeURI(e.options.format)}`;
+                option = `${encodeURIComponent(e.options.format)}`;
                 break;
             case CipherType.array:
-                option = `${encodeURI(e.options.format)}`;
+                option = `${encodeURIComponent(e.options.format)}`;
                 break;
             case CipherType.scytale:
                 option = `${e.options.mode}_${e.options.interval}`;
@@ -320,7 +332,7 @@ function copyURLClicked(){
                 option = `${e.options.from}_${e.options.to}_${e.options.vecIn ? "T" : "F"}_${e.options.vecOut ? "T" : "F"}`;
                 break;
             case CipherType.calc:
-                option = `${encodeURI(e.options.exp)}`;
+                option = `${encodeURIComponent(e.options.exp)}`;
                 break;
         }
         urlParam += `(${e.id}.${e.fromIdMain}.${Object.keys(CipherType)[e.type]}.${option})`
@@ -329,4 +341,39 @@ function copyURLClicked(){
     navigator.clipboard.writeText(urlParam).then(() => {
         console.log("copy finished", urlParam);
     });
+}
+
+function viewNewLine(s){
+    let result = "";
+    for(let i = 0; i < s.length; i++){
+        if(s[i] == "\n"){
+            result += "\\n";
+        }else{
+            result += s[i];
+        }
+    }
+    return result;
+}
+function unviewNewLine(s){
+    let result = "";
+    for(let i = 0; i < s.length; i++){
+        if(s[i] +  s[i + 1] == "\\n"){
+            result += "\n";
+            i++;
+        }else{
+            result += s[i];
+        }
+    }
+    return result;
+}
+
+function sepInput(sepNo){
+    if(sepNo == "sep1"){
+        cipherObjects.get(sepBoxId).separator1 = unviewNewLine(document.getElementById("sep1").value);
+    }else if(sepNo == "sep2"){
+        cipherObjects.get(sepBoxId).separator2 = unviewNewLine(document.getElementById("sep2").value);
+    }else if(sepNo == "sep3"){
+        cipherObjects.get(sepBoxId).separator3 = unviewNewLine(document.getElementById("sep3").value);
+    }
+    updateAllText();
 }

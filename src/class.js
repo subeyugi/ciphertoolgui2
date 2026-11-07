@@ -306,6 +306,7 @@ class CipherObject{
         }
 
         document.getElementById(`sp_${this.id}`).innerHTML = html;
+        
         if(update){
             updateAllText();
         }

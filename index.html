@@ -29,6 +29,7 @@
             </span>
             <span class='top_half'>
                 <h8>出力文</h8>
+                <button id="copyButton" onclick='updateAllText()'>更新</button>
                 <button id="copyButton" onclick='outputCopyBtnClicked()'>コピー</button>
                 <span class='top_id' id='top_output_id'></span>
                 <span class='top_error' id='top_output_message'></span>
@@ -47,7 +48,15 @@
         </div>
         <div class="main_area" id="main_area">
             <div id='cursor' class='cursorBox'>Move</div>
+            <!-- ここにグリッド線とBoxを追加 -->
+            <div id="zoomArea" class="zoomArea" style="display:none" onclick="">
+                区切り文字設定
+                <input class="boxSpInput2" id="sep1" oninput="sepInput('sep1')"></input>
+                <input class="boxSpInput2" id="sep2" oninput="sepInput('sep2')"></input>
+                <input class="boxSpInput2" id="sep3" oninput="sepInput('sep3')"></input>
+            </div>
         </div>
+
         <div class="bottomOutputArea" style="display:none"> <!-- style="display:none" -->
             <div class="bottomArea">
                 <h3>midi　　　　　<button type="button" class="buttom_button">midi出力</button></h3>

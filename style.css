@@ -185,3 +185,15 @@ textarea{
 input[type='file']{
     background-color: transparent;
 }
+
+.zoomArea{
+    font-size: 14px;
+    position: absolute;
+    width: 180px;
+    height: auto;
+    margin: 5px;
+    padding:5px;
+    top: 200px;
+    left: calc((100% - 500px) / 2);
+    background-color: #505050;
+}

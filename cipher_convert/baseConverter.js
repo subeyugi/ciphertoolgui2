@@ -154,5 +154,3 @@ function convertBase(s, fromBase, toBase, isVecFrom=false, isVecTo=false){
     }
     return new ConverterResult(result, message);
 }
-
-console.log(convertBaseVec([0], 2, 10));

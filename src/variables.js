@@ -16,7 +16,8 @@ let gridColumnCount = Math.floor((window.innerWidth - gridStartLeft) / gridWidth
 let nowSelectId = "A1";
 let ctrlPressed = false;
 let selectFromId = undefined;
-let sep1 = ',', sep2 = ' ', sep3 = '\n';
+//let sep1 = ',', sep2 = ' ', sep3 = '\n';
+let sepBoxId = "";
 
 let midiFileName = "";
 let urlQueryParams = "";
