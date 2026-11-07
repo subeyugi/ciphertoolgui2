@@ -123,9 +123,9 @@ if(urlQueryParams != ""){
         json["fromIds"] = ([tmp[1]] == ""? [] : [tmp[1]]);
         json["toIds"] = [];
         json["type"] = tmp[2];
-        json["separator1"] = decodeURI(tmp[3]);
-        json["separator2"] = decodeURI(tmp[4]);
-        json["separator3"] = decodeURI(tmp[5]);
+        json["separator1"] = decodeURI(tmp[4]);
+        json["separator2"] = decodeURI(tmp[5]);
+        json["separator3"] = decodeURI(tmp[6]);
         json["text"] = "";
 
         option = tmp[3].split("_");
