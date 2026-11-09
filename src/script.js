@@ -271,7 +271,9 @@ document.getElementById('file_input').addEventListener('change', (e) => {
 function copyURLClicked(){
     console.log(cipherObjects);
     let urlParam = "https://ciphertoolgui2.pentate.workers.dev?";
-    cipherObjects.forEach(e => {
+    let sortedIds = getSortedCipherIds();
+    sortedIds.forEach(id => {
+        let e = cipherObjects.get(id);
         option = ""
         switch(e.type){
             case CipherType.none:

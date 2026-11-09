@@ -1,4 +1,4 @@
-function updateAllText(){
+function getSortedCipherIds(){
     //あらかじめトポロジカルソートしておく
     let seen = new Set([]);
     let remFromId = new Map();
@@ -33,12 +33,16 @@ function updateAllText(){
             }
         });
     }
+    return sortedIds;
+}
+
+function updateAllText(){
+    let sortedIds = getSortedCipherIds();
     console.log("sortedIds", sortedIds);
     sortedIds.forEach(function(id){
         updateText(id);
     });
     //exportUpdate();
-
     if(outputId){
         document.getElementById('output_text').value = cipherObjects.get(outputId).text;
         document.getElementById('top_output_message').value = cipherObjects.get(outputId).message;
