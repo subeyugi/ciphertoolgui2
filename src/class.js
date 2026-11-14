@@ -294,10 +294,12 @@ class CipherObject{
                 classList.add('math');
                 break;
             case CipherType.calc:
-                this.options = {'exp': `${this.id}+1`};
+                this.options = {'exp': `${this.id}+1`, 'float': false};
                 if(option != undefined) this.options = option;
                 html = `<div id='val_${this.id}'></div>
-                    <textarea id='exp_${this.id}' class='boxInput' oninput='optionChanged("${this.id}", "exp")'>{${this.fromIdMain}}+1</textarea>`;
+                    <textarea id='exp_${this.id}' class='boxInput' oninput='optionChanged("${this.id}", "exp")'>{${this.fromIdMain}}+1</textarea>
+                    <input type="checkbox" id="chk_${this.id}" onchange='optionChanged("${this.id}", "chk")' ${this.options.float?'checked':''}/>
+                    <label>実数計算</label>`;
                 classList.add('math');
                 break;
             default:
@@ -394,6 +396,7 @@ function optionChanged(id, option, update = true){
         case CipherType.charcode:
             if(option == 'mode' || option == 'code'){
                 obj.options[option] = document.getElementById(`${option}_${id}`).value;
+                console.log(obj.options[option]);
                 if(obj.options.mode == 'decodeHex' && obj.options.code != 'ASCII'){
                     document.getElementById(`add_${id}`).style='display:block';
                     document.getElementById(`chklab_${id}`).innerText = {'SJIS':'82', 'EUCJP':'a4', 'UTF8':'e38', 'UTF16':'30'}[obj.options.code] + '追加';
@@ -430,22 +433,26 @@ function optionChanged(id, option, update = true){
             obj.options.vecOut = document.getElementById(`vecOut_${id}`).checked;
             break;
         case CipherType.calc:
-            s = obj.options.exp;
-            startIdx = -1;
-            fromIds = [];
-            for(let i = 0; i < s.length; i++){
-                if(s[i] == ' '){
-                }else if(s[i] == '{'){
-                    startIdx = i + 1;
-                }else if(s[i] == '}'){
-                    let fromId = s.substring(startIdx, i);
-                    if(isId(fromId)){
-                        fromIds.push(fromId);
+            if(option == "exp"){
+                s = obj.options.exp;
+                startIdx = -1;
+                fromIds = [];
+                for(let i = 0; i < s.length; i++){
+                    if(s[i] == ' '){
+                    }else if(s[i] == '{'){
+                        startIdx = i + 1;
+                    }else if(s[i] == '}'){
+                        let fromId = s.substring(startIdx, i);
+                        if(isId(fromId)){
+                            fromIds.push(fromId);
+                        }
+                        startIdx = -1;
                     }
-                    startIdx = -1;
                 }
+                obj.setLinkId(fromIds);
+            }else if(option == "chk"){
+                obj.options.float = document.getElementById(`chk_${id}`).checked;
             }
-            obj.setLinkId(fromIds);
             break;
     }
 

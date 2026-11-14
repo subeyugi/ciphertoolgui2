@@ -5,7 +5,6 @@ for(let i = 0; i < 36; i++){
 }
 
 function convertBaseVec(vec, fromBase, toBase){
-    console.log(vec, fromBase, toBase)
     if(fromBase < 2){
         return new ConverterResult("", `進数は2以上にしてください`);
     }

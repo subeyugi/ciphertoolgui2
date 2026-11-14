@@ -235,11 +235,12 @@ select::-webkit-scrollbar {
 
 .boxInput{
     width: 175px;
-    height: 50px;
+    height: 30px;
     overflow-wrap: break-word;
     resize: none;
     font-size: 14px;
     background-color: #303030;
+    min-height: 0px;
 }
 
 /* type変更による背景色変更 */

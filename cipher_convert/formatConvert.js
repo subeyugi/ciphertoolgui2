@@ -5,7 +5,6 @@
  */
 
 function subConvertFormat(s, variable){
-    //console.log("subConvertFormat", s, variable)
     let result = "";
     let symbolIdx = [undefined, undefined, undefined];
     for(let i = 0; i < s.length; i++){
@@ -41,8 +40,17 @@ function subConvertFormat(s, variable){
         return new ConverterResult(result);//format未対応
     }else if(symbolIdx[0] != undefined && symbolIdx[1] == undefined && symbolIdx[2] != undefined){//A1[2]
         let idx = parseInt(s.substring(symbolIdx[0] + 1, symbolIdx[2]));
-        if(idx < 0) idx = variable[s.substring(0, symbolIdx[0])].length + idx;
-        return new ConverterResult(variable[s.substring(0, symbolIdx[0])][idx]);
+        if(isNaN(idx)){
+            return new ConverterResult(getErrorStr(`{${s}}`), `"${s}"の入力形式が誤っています`);
+        }else{
+            let str = variable[s.substring(0, symbolIdx[0])];
+            if(idx < 0)idx = str.length + idx;
+            if(0 <= idx && idx < str.length){
+                return new ConverterResult(str[idx]);
+            }else{
+                return new ConverterResult(getErrorStr(`{${s}}`), `"${s}"は配列参照外です`);
+            }
+        }
     }else if(symbolIdx[0] != undefined && symbolIdx[1] != undefined && symbolIdx[2] != undefined){//A1[2:4]
         let idxL = parseInt(s.substring(symbolIdx[0] + 1, symbolIdx[1]));
         let idxR = parseInt(s.substring(symbolIdx[1] + 1, symbolIdx[2]));
@@ -100,7 +108,7 @@ function convertFormat(s, variable, isVec = false){
                 if(startIdx != -1){
                     let tmp = subConvertFormat(s.substring(startIdx + 1, i), variable);
                     result += tmp.result;
-                    if(message != "") message = tmp.message;
+                    if(message == "") message = tmp.message;
                     startIdx = -1;
                 }else{
                     return new ConverterResult(result, '入力に誤りがあります');

@@ -43,7 +43,7 @@ function updateAllText(){
         updateText(id);
     });
     //exportUpdate();
-    if(outputId){
+    if(outputId && cipherObjects.get(outputId) != undefined){
         document.getElementById('output_text').value = cipherObjects.get(outputId).text;
         document.getElementById('top_output_message').value = cipherObjects.get(outputId).message;
     }
@@ -88,6 +88,7 @@ function updateText(to_id){
     let options = toObj.options;
     let fromText = '';
     let tmp;
+
     sep1 = unviewNewLine(cipherObjects.get(to_id).separator1);
     sep2 = unviewNewLine(cipherObjects.get(to_id).separator2);
     sep3 = unviewNewLine(cipherObjects.get(to_id).separator3);
@@ -96,6 +97,16 @@ function updateText(to_id){
         fromTextSplit = splitText(fromText);
     }else if(toObj.fromIds.size >= 2){
 
+    }
+    if(fromText == undefined){
+        toObj.text = "";
+        toObj.message = "参照元が見つかりません";
+        document.getElementById('txt_' + to_id).innerText = toObj.text;
+        document.getElementById('output_text').innerText = toObj.text;
+        document.getElementById("top_output_length").innerText = getStrLength(toObj.text);
+        document.getElementById('alr_' + to_id).style.display = 'block';
+        document.getElementById('top_output_message').textContent = toObj.message;
+        return;
     }
 
     switch(toObj.type){
@@ -312,14 +323,13 @@ function updateText(to_id){
             break;
         case CipherType.format:
             //optionの方が分割ありになる
-            tmp = convertFormat(document.getElementById(`format_${to_id}`).value, getResults(toObj.fromIds), true);
+            tmp = convertFormat(document.getElementById(`format_${to_id}`).value, getResults(toObj.fromIds).result, true);
             toObj.text = joinText(tmp.result);
             toObj.message = tmp.message;
             break;
         case CipherType.array:
             //optionの方が分割ありになる
             tmp = convertArray(fromTextSplit, options.format);
-            console.log("tmp", tmp);
             toObj.text = joinText(tmp.result);
             toObj.message = tmp.message;
             break;
@@ -352,7 +362,11 @@ function updateText(to_id){
             }
             break;
         case CipherType.calc:
-            tmp = calculate(document.getElementById(`exp_${to_id}`).value, getResults(toObj.fromIds), true);
+            if(options.float){
+                tmp = calculate(document.getElementById(`exp_${to_id}`).value, getResults(toObj.fromIds).result, true);
+            }else{
+                tmp = calculateInt(document.getElementById(`exp_${to_id}`).value, getResults(toObj.fromIds).result, true);
+            }
             toObj.text = joinText(tmp.result);
             toObj.message = tmp.message;
             break;
@@ -381,5 +395,5 @@ function getResults(fromIds){
             result[id] = tmp;
         }
     });
-    return result;
+    return new ConverterResult(result, "");
 }

@@ -1,7 +1,7 @@
 let idSet = new Set();
 let cipherObjects = new Map();
-let inputId = 'A1', inputText = '';
-let outputId = 'A1', outputText = '';
+let inputId = '', inputText = '';
+let outputId = '', outputText = '';
 let lines = [];
 let types = [];
 let splitChars = [',', '/', '\n'];
