@@ -294,10 +294,10 @@ class CipherObject{
                 classList.add('math');
                 break;
             case CipherType.calc:
-                this.options = {'exp': `${this.id}+1`, 'float': false};
+                this.options = {'exp': `{${this.fromIdMain}}+1`, 'float': false};
                 if(option != undefined) this.options = option;
                 html = `<div id='val_${this.id}'></div>
-                    <textarea id='exp_${this.id}' class='boxInput' oninput='optionChanged("${this.id}", "exp")'>{${this.fromIdMain}}+1</textarea>
+                    <textarea id='exp_${this.id}' class='boxInput' oninput='optionChanged("${this.id}", "exp")'>${this.options.exp}</textarea>
                     <input type="checkbox" id="chk_${this.id}" onchange='optionChanged("${this.id}", "chk")' ${this.options.float?'checked':''}/>
                     <label>実数計算</label>`;
                 classList.add('math');

@@ -40,7 +40,7 @@ function getCalcLevel(s){
 
 function calculate_sub(vec){//数値で返す
     let level = getCalcLevel(vec);
-    //console.log("calculate_sub", vec, level);
+    console.log("calculate_sub", vec, level);
 
     for(let i = 0; i < vec.length - 1; i++){
         if(!isNaN(vec[i]) && !isNaN(vec[i + 1])) return new ConverterResult('', '数式に誤りがあります(数字連続)');
@@ -81,7 +81,7 @@ function calculate_sub(vec){//数値で返す
         if(cntOpen != 0) return new ConverterResult('', '数式に誤りがあります(かっこ未対応)');
         return calculate_sub(result);
     }else if(level == 2){   // ^
-
+        //指数タワーに注意（未実装）
     }else if(level == 3){   // */%
         //+-で分割してから計算
         let left = 0;
@@ -165,7 +165,7 @@ function calculate_sub(vec){//数値で返す
 function calculate(s, variable, isVec = false){
     let message = '';
     if(isVec){
-        //console.log(s, variable);
+        if(Object.keys(variable).length === 0) variable = {"dummy": [[[0]]]}; //リンク0のときに出力が空白になる対策
         let result = '';
         let vec = [];
         Object.entries(variable).forEach(tmp => {

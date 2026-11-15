@@ -336,7 +336,7 @@ function copyURLClicked(){
                 option = `${e.options.from}_${e.options.to}_${e.options.vecIn ? "T" : "F"}_${e.options.vecOut ? "T" : "F"}`;
                 break;
             case CipherType.calc:
-                option = `${encodeURIComponent(e.options.exp)}`;
+                option = `${encodeURIComponent(e.options.exp)}_${e.options.float}`;
                 break;
         }
         let sep1 = encodeURI(e.separator1);

@@ -117,9 +117,11 @@ function calculateInt_sub(vec){//数値で返す
 }
 
 function calculateInt(s, variable, isVec = false){
+    console.log("calcInt", s, variable);
     let message = '';
     if(isVec){
-        //console.log(s, variable);
+        if(Object.keys(variable).length === 0) variable = {"dummy": [[[0]]]}; //リンク0のときに出力が空白になる対策
+
         let result = '';
         let vec = [];
         Object.entries(variable).forEach(tmp => {
@@ -211,5 +213,3 @@ function calculateInt(s, variable, isVec = false){
         return new ConverterResult(result2.result.toString(), result2.message);
     }
 }
-
-calculateInt("35*23*", {});

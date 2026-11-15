@@ -13,6 +13,7 @@ function getSortedCipherIds(){
             remFromId.get(id).add(e);
         })
     });
+    //console.log("remFromIds", remFromId);
     remFromId.forEach((val, id)=>{
         if(val.size == 0){
             que.push(id);
@@ -41,6 +42,7 @@ function updateAllText(){
     console.log("sortedIds", sortedIds);
     sortedIds.forEach(function(id){
         updateText(id);
+        //console.log("aa", id);
     });
     //exportUpdate();
     if(outputId && cipherObjects.get(outputId) != undefined){
@@ -88,7 +90,6 @@ function updateText(to_id){
     let options = toObj.options;
     let fromText = '';
     let tmp;
-
     sep1 = unviewNewLine(cipherObjects.get(to_id).separator1);
     sep2 = unviewNewLine(cipherObjects.get(to_id).separator2);
     sep3 = unviewNewLine(cipherObjects.get(to_id).separator3);
@@ -362,8 +363,9 @@ function updateText(to_id){
             }
             break;
         case CipherType.calc:
+            console.log("calc");
             if(options.float){
-                tmp = calculate(document.getElementById(`exp_${to_id}`).value, getResults(toObj.fromIds).result, true);
+                tmp = calculate(toObj.options.exp, getResults(toObj.fromIds).result, true);
             }else{
                 tmp = calculateInt(document.getElementById(`exp_${to_id}`).value, getResults(toObj.fromIds).result, true);
             }
